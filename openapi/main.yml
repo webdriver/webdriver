@@ -1,0 +1,1446 @@
+openapi: 3.0.0
+info:
+  description: WebDriver is a remote control interface that enables introspection and control of user agents. It provides a platform- and language-neutral wire protocol as a way for out-of-process programs to remotely instruct the behavior of web browsers.
+  version: "2.0.0"
+  title: WebDriver
+  termsOfService: 'https://www.w3.org/Consortium/Legal/2002/ipr-notice-20021231'
+  contact:
+    name: Browser Testing and Tools Working Group
+    email: public-browser-tools-testing@w3.org
+    url: 'https://www.w3.org/testing/browser/'
+  license:
+    name: W3C Software and Document License
+    url: 'https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document'
+externalDocs:
+  description: W3C Living Document
+  url: 'https://w3c.github.io/webdriver/'
+servers:
+  - url: 'http://localhost:4444/'
+    description: browser driver when run locally
+  - url: 'https://ondemand.saucelabs.com/'
+    description: OnDemand url if run using Sauce Labs
+tags: []
+paths:
+  /session:
+    post:
+      $ref: ./session/newSession.yml
+  '/session/{sessionId}':
+    delete:
+      $ref: ./session/deleteSession.yml
+  /status:
+    get:
+      $ref: ./session/status.yml
+  '/session/{sessionId}/timeouts':
+    get:
+      operationId: getTimeouts
+      summary: The Get Timeouts command gets timeout durations associated with the current session.
+      externalDocs:
+        description: See getTimeouts command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-timeouts'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: 'Object containing timeout durations for `script`, `pageLoad` and `implicit` timeouts.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timeouts'
+    post:
+      operationId: setTimeouts
+      summary: The Set Timeouts command sets timeout durations associated with the current session. The timeouts that can be controlled are listed in the table of session timeouts below.
+      externalDocs:
+        description: See setTimeouts command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-set-timeouts'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Timeouts'
+  '/session/{sessionId}/url':
+    get:
+      operationId: getUrl
+      summary: The Get Current URL command returns the URL of the current top-level browsing context.
+      externalDocs:
+        description: See getUrl command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-current-url'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: Current top-level browsing context’s active document’s document URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: Current top-level browsing context’s active document’s document URL
+                    type: string
+                    example: 'https://example.com'
+    post:
+      operationId: navigateTo
+      summary: The navigateTo (go) command is used to cause the user agent to navigate the current top-level browsing context a new location.
+      externalDocs:
+        description: See navigateTo command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-navigate-to'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  description: An absolute URL or is not an absolute URL with fragment or not a local scheme.
+                  type: string
+                  example: 'https://example.com'
+  '/session/{sessionId}/back':
+    post:
+      operationId: back
+      summary: The Back command causes the browser to traverse one step backward in the joint session history of the current top-level browsing context. This is equivalent to pressing the back button in the browser chrome or calling `window.history.back`.
+      externalDocs:
+        description: See back command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-back'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/forward':
+    post:
+      operationId: forward
+      summary: The Forward command causes the browser to traverse one step forwards in the joint session history of the current top-level browsing context.
+      externalDocs:
+        description: See forward command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-forward'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/refresh':
+    post:
+      operationId: refresh
+      summary: The Refresh command causes the browser to reload the page in current top-level browsing context.
+      externalDocs:
+        description: See refresh command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-refresh'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/title':
+    get:
+      operationId: getTitle
+      summary: 'The Get Title command returns the document title of the current top-level browsing context, equivalent to calling `document.title`.'
+      externalDocs:
+        description: See getTitle command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-title'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: 'This command returns the document title of the current top-level browsing context, equivalent to calling document.title.'
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    description: The result of calling the algorithm for getting the title attribute of the current top-level browsing context’s active document.
+                    type: string
+  '/session/{sessionId}/window':
+    get:
+      operationId: getWindowHandle
+      summary: The Get Window Handle command returns the window handle for the current top-level browsing context. It can be used as an argument to Switch To Window.
+      externalDocs:
+        description: See getWindowHandle command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-window-handle'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: Returns a string which is the window handle for the current top-level browsing context.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    description: A string which is the window handle for the current top-level browsing context.
+                    type: string
+                    example: window-1234-5678-abcd-efgh
+      description: |
+        # What up!
+        ```
+        sasad
+        ```
+        sasaddsasda
+        sadasdsa
+        sasddsa
+        > lalala
+        dsasad
+    delete:
+      operationId: closeWindow
+      summary: 'The Close Window command closes the current top-level browsing context. Once done, if there are no more top-level browsing contexts open, the WebDriver session itself is closed.'
+      externalDocs:
+        description: See closeWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-close-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+    post:
+      operationId: switchToWindow
+      summary: 'The Switch To Window command is used to select the current top-level browsing context for the current session, i.e. the one that will be used for processing commands.'
+      externalDocs:
+        description: See switchToWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WindowHandle'
+  '/session/{sessionId}/window/new':
+    post:
+      operationId: createWindow
+      summary: Create a new top-level browsing context.
+      externalDocs:
+        description: See createWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#new-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: New window object containing 'handle' with the value of the handle and 'type' with the value of the created window type
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/NewWindowHandle'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewWindowHandle'
+  '/session/{sessionId}/window/handles':
+    get:
+      operationId: getWindowHandles
+      summary: The Get Window Handles command returns a list of window handles for every open top-level browsing context. The order in which the window handles are returned is arbitrary.
+      externalDocs:
+        description: See getWindowHandles command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-window-handles'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: An array which is a list of window handles.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WindowHandle'
+  '/session/{sessionId}/frame':
+    post:
+      operationId: switchToFrame
+      summary: The Switch To Frame command is used to select the current top-level browsing context or a child browsing context of the current browsing context to use as the current browsing context for subsequent commands.
+      externalDocs:
+        description: See switchToFrame command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-frame'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Frame'
+  '/session/{sessionId}/frame/parent':
+    post:
+      operationId: switchToParentFrame
+      summary: The Switch to Parent Frame command sets the current browsing context for future commands to the parent of the current browsing context.
+      externalDocs:
+        description: See switchToParentFrame command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-parent-frame'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/window/rect':
+    get:
+      operationId: getWindowRect
+      summary: The Get Window Rect command returns the size and position on the screen of the operating system window corresponding to the current top-level browsing context.
+      externalDocs:
+        description: See getWindowRect command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-window-rect'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: 'A JSON representation of a "window rect" object. This has 4 properties: `x`, `y`, `width` and `height`.'
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/WindowRect'
+    post:
+      operationId: setWindowRect
+      summary: The Set Window Rect command alters the size and the position of the operating system window corresponding to the current top-level browsing context.
+      externalDocs:
+        description: See setWindowRect command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-set-window-rect'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of a "window rect" object based on the new window state.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/WindowRect'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WindowRect'
+  '/session/{sessionId}/window/maximize':
+    post:
+      operationId: maximizeWindow
+      summary: 'The Maximize Window command invokes the window manager-specific "maximize" operation, if any, on the window containing the current top-level browsing context. This typically increases the window to the maximum available size without going full-screen.'
+      externalDocs:
+        description: See maximizeWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-maximize-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of a "window rect" object based on the new window state.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/WindowRect'
+  '/session/{sessionId}/window/minimize':
+    post:
+      operationId: minimizeWindow
+      summary: 'The Minimize Window command invokes the window manager-specific "minimize" operation, if any, on the window containing the current top-level browsing context. This typically hides the window in the system tray.'
+      externalDocs:
+        description: See minimizeWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-minimize-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of a "window rect" object of the (new) current top-level browsing context.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/WindowRect'
+  '/session/{sessionId}/window/fullscreen':
+    post:
+      operationId: fullscreenWindow
+      summary: 'The Fullscreen Window command invokes the window manager-specific “full screen” operation, if any, on the window containing the current top-level browsing context. This typically increases the window to the size of the physical display and can hide browser chrome elements such as toolbars.'
+      externalDocs:
+        description: See fullscreenWindow command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-fullscreen-window'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of a "window rect" object of the (new) current top-level browsing context.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/WindowRect'
+  '/session/{sessionId}/element':
+    post:
+      operationId: findElement
+      summary: The Find Element command is used to find an element in the current browsing context that can be used for future commands.
+      externalDocs:
+        description: See findElement command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-find-element'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of an element object.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/ElementObject'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementQuery'
+  '/session/{sessionId}/elements':
+    post:
+      operationId: findElements
+      summary: The Find Elements command is used to find elements in the current browsing context that can be used for future commands.
+      externalDocs:
+        description: See findElements command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-find-elements'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A (possibly empty) JSON list of representations of an element object.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ElementObject'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementQuery'
+  '/session/{sessionId}/element/{elementId}/element':
+    post:
+      operationId: findElementFromElement
+      summary: The Find Element From Element command is used to find an element from a web element in the current browsing context that can be used for future commands.
+      externalDocs:
+        description: See findElementFromElement command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-find-element-from-element'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: A JSON representation of an element object.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/ElementObject'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementQuery'
+  '/session/{sessionId}/element/{elementId}/elements':
+    post:
+      operationId: findElementsFromElement
+      summary: The Find Elements From Element command is used to find elements from a web element in the current browsing context that can be used for future commands.
+      externalDocs:
+        description: See findElementsFromElement command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-find-elements-from-element'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: A (possibly empty) JSON list of representations of an element object.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ElementObject'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementQuery'
+  '/session/{sessionId}/element/active':
+    get:
+      operationId: getActiveElement
+      summary: Get Active Element returns the active element of the current browsing context’s document element.
+      externalDocs:
+        description: See getActiveElement command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-active-element'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A JSON representation of an element object.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/ElementObject'
+  '/session/{sessionId}/element/{elementId}/selected':
+    get:
+      operationId: isElementSelected
+      summary: 'Is Element Selected determines if the referenced element is selected or not. This operation only makes sense on input elements of the Checkbox- and Radio Button states, or option elements.'
+      externalDocs:
+        description: See isElementSelected command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-is-element-selected'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: '`true` or `false` based on the selected state.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: boolean
+                    description: is true if element is selected
+  '/session/{sessionId}/element/{elementId}/attribute/{attributeName}':
+    get:
+      operationId: getElementAttribute
+      summary: The Get Element Attribute command will return the attribute of a web element.
+      externalDocs:
+        description: See getElementAttribute command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-attribute'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+        - $ref: '#/components/parameters/attributeName'
+      responses:
+        '200':
+          description: The named attribute of the element.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    anyOf:
+                      - description: 'If the element has a named attribute with a value, this is returned'
+                        type: string
+                      - description: 'If the element has a boolean attribute, the string (not boolean) true is returned'
+                        type: boolean
+                      - description: 'If the element does not have the attribute, null is returned'
+                        nullable: true
+  '/session/{sessionId}/element/{elementId}/property/{propertyName}':
+    get:
+      operationId: getElementProperty
+      summary: The Get Element Property command will return the result of getting a property of an element.
+      externalDocs:
+        description: See getElementProperty command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-property'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+        - $ref: '#/components/parameters/propertyName'
+      responses:
+        '200':
+          description: 'The named property of the element, accessed by calling GetOwnProperty on the element object.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The named property of the element.
+                    type: string
+  '/session/{sessionId}/element/{elementId}/css/{cssPropertyName}':
+    get:
+      operationId: getElementCSSValue
+      summary: The Get Element CSS Value command retrieves the computed value of the given CSS property of the given web element.
+      externalDocs:
+        description: See getElementCSSValue command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-css-value'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+        - $ref: '#/components/parameters/cssPropertyName'
+      responses:
+        '200':
+          description: 'The computed value of the parameter corresponding to property name from the element''s style declarations (unless the document type is xml, in which case the return value is simply the empty string).'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The CSS value of the provided property of the element.
+                    type: string
+  '/session/{sessionId}/element/{elementId}/text':
+    get:
+      operationId: getElementText
+      summary: The Get Element Text command intends to return an element’s text "as rendered". An element's rendered text is also used for locating a elements by their link text and partial link text.
+      externalDocs:
+        description: See getElementText command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-text'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: 'The visible text of the element (including child elements), following the algorithm defined in the Selenium Atoms for [`bot.dom.getVisibleText`](https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L981).'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The visible text of the element.
+                    type: string
+  '/session/{sessionId}/element/{elementId}/name':
+    get:
+      operationId: getElementTagName
+      summary: The Get Element Tag Name command returns the qualified element name of the given web element.
+      externalDocs:
+        description: See getElementTagName command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-tag-name'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: The tagName attribute of the element.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The tagName attribute of the element.
+                    type: string
+  '/session/{sessionId}/element/{elementId}/rect':
+    get:
+      operationId: getElementRect
+      summary: The Get Element Rect command returns the dimensions and coordinates of the given web element.
+      externalDocs:
+        description: See getElementRect command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-element-rect'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: A JSON object representing the position and bounding rect of the element.
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    $ref: '#/components/schemas/ElementRect'
+  '/session/{sessionId}/element/{elementId}/enabled':
+    get:
+      operationId: isElementEnabled
+      summary: Is Element Enabled determines if the referenced element is enabled or not. This operation only makes sense on form controls.
+      externalDocs:
+        description: See isElementEnabled command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-is-element-enabled'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: 'If the element is in an xml document, or is a disabled form control: `false`, otherwise, `true`.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: 'If the element is in an xml document, or is a disabled form control: `false`, otherwise, `true`.'
+                    type: boolean
+  '/session/{sessionId}/element/{elementId}/click':
+    post:
+      operationId: elementClick
+      summary: 'The Element Click command scrolls into view the element if it is not already pointer-interactable, and clicks its in-view center point. If the element''s center point is obscured by another element, an element click intercepted error is returned. If the element is outside the viewport, an element not interactable error is returned.'
+      externalDocs:
+        description: See elementClick command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-element-click'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/element/{elementId}/clear':
+    post:
+      operationId: elementClear
+      summary: The Element Clear command scrolls into view an editable or resettable element and then attempts to clear its selected files or text content.
+      externalDocs:
+        description: See elementClear command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-element-clear'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/element/{elementId}/value':
+    post:
+      operationId: elementSendKeys
+      summary: 'The Element Send Keys command scrolls into view the form control element and then sends the provided keys to the element. In case the element is not keyboard-interactable, an element not interactable error is returned.<br><br>The key input state used for input may be cleared mid-way through "typing" by sending the null key, which is U+E000 (NULL).'
+      externalDocs:
+        description: See elementSendKeys command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-element-send-keys'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  description: String to send as keystrokes to the element.
+                  type: string
+              example:
+                text: hello world
+  '/session/{sessionId}/source':
+    get:
+      operationId: getPageSource
+      summary: The Get Page Source command returns a string serialization of the DOM of the current browsing context active document.
+      externalDocs:
+        description: See getPageSource command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-page-source'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: The serialized document source.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The serialized document source.
+                    type: string
+                example:
+                  value: <html>...</html>
+  '/session/{sessionId}/execute/sync':
+    post:
+      operationId: executeScript
+      summary: The Execute Script command executes a JavaScript function in the context of the current browsing context and returns the return value of the function.
+      externalDocs:
+        description: See executeScript command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-execute-script'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: 'Either the return value of your script, the fulfillment of the Promise returned by your script, or the error which was the reason for your script''s returned Promise''s rejection.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: can contain arbitrary values
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScriptExecution'
+  '/session/{sessionId}/execute/async':
+    post:
+      operationId: executeAsyncScript
+      summary: 'The Execute Async Script command causes JavaScript to execute as an anonymous function. Unlike the Execute Script command, the result of the function is ignored. Instead an additional argument is provided as the final argument to the function. This is a function that, when called, returns its first argument as the response.'
+      externalDocs:
+        description: See executeAsyncScript command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-execute-async-script'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: 'Either the return value of your script, the fulfillment of the Promise returned by your script, or the error which was the reason for your script''s returned Promise''s rejection.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: can contain arbitrary values
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScriptExecution'
+  '/session/{sessionId}/cookie':
+    get:
+      operationId: getAllCookies
+      summary: The Get All Cookies command returns all cookies associated with the address of the current browsing context’s active document.
+      externalDocs:
+        description: See getAllCookies command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-all-cookies'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: A list of serialized cookies. Each serialized cookie has a number of optional fields which may or may not be returned in addition to `name` and `value`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cookie'
+    post:
+      operationId: addCookie
+      summary: The Add Cookie command adds a single cookie to the cookie store associated with the active document's address.
+      externalDocs:
+        description: See addCookie command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-adding-a-cookie'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cookie'
+    delete:
+      operationId: deleteAllCookies
+      summary: The Delete All Cookies command allows deletion of all cookies associated with the active document's address.
+      externalDocs:
+        description: See deleteAllCookies command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-delete-all-cookies'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/cookie/{cookieName}':
+    get:
+      operationId: getNamedCookie
+      summary: 'The Get Named Cookie command returns the cookie with the requested name from the associated cookies in the cookie store of the current browsing context''s active document. If no cookie is found, a no such cookie error is returned.'
+      externalDocs:
+        description: See getNamedCookie command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-named-cookie'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/cookieName'
+      responses:
+        '200':
+          description: 'A serialized cookie, with name and value fields. There are a number of optional fields like `path`, `domain`, and `expiry-time` which may also be present.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    $ref: '#/components/schemas/Cookie'
+    delete:
+      operationId: deleteCookie
+      summary: 'The Delete Cookie command allows you to delete either a single cookie by parameter name, or all the cookies associated with the active document''s address if name is undefined.'
+      externalDocs:
+        description: See deleteCookie command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-delete-cookie'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/cookieName'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/actions':
+    post:
+      operationId: performActions
+      summary: 'The Perform Actions command is used to execute complex user actions. See [spec](https://github.com/jlipps/simple-wd-spec#perform-actions) for more details.'
+      externalDocs:
+        description: See performActions command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-perform-actions'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Action'
+    delete:
+      operationId: releaseActions
+      summary: The Release Actions command is used to release all the keys and pointer buttons that are currently depressed. This causes events to be fired as if the state was released by an explicit series of actions. It also clears all the internal state of the virtual devices.
+      externalDocs:
+        description: See releaseActions command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-release-actions'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/alert/dismiss':
+    post:
+      operationId: dismissAlert
+      summary: 'The Dismiss Alert command dismisses a simple dialog if present. A request to dismiss an alert user prompt, which may not necessarily have a dismiss button, has the same effect as accepting it.'
+      externalDocs:
+        description: See dismissAlert command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-dismiss-alert'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/alert/accept':
+    post:
+      operationId: acceptAlert
+      summary: The Accept Alert command accepts a simple dialog if present.
+      externalDocs:
+        description: See acceptAlert command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-accept-alert'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+  '/session/{sessionId}/alert/text':
+    get:
+      operationId: getAlertText
+      summary: 'The Get Alert Text command returns the message of the current user prompt. If there is no current user prompt, it returns an error.'
+      externalDocs:
+        description: See getAlertText command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-get-alert-text'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: The message of the user prompt.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The message of the user prompt.
+                    type: string
+    post:
+      operationId: sendAlertText
+      summary: The Send Alert Text command sets the text field of a window.prompt user prompt to the given value.
+      externalDocs:
+        description: See sendAlertText command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-send-alert-text'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: empty response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullResponse'
+      requestBody:
+        description: string to set the prompt to
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              example:
+                text: My prompt response
+  '/session/{sessionId}/screenshot':
+    get:
+      operationId: takeScreenshot
+      summary: The Take Screenshot command takes a screenshot of the top-level browsing context's viewport.
+      externalDocs:
+        description: See takeScreenshot command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-take-screenshot'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+      responses:
+        '200':
+          description: The base64-encoded PNG image data comprising the screenshot of the initial viewport.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The base64-encoded PNG image data comprising the screenshot of the initial viewport.
+                    type: string
+                example:
+                  value: iVBORw0KGgoAAAANSUhEUgAAARMAAAFBC...
+  '/session/{sessionId}/element/{elementId}/screenshot':
+    get:
+      operationId: takeElementScreenshot
+      summary: The Take Element Screenshot command takes a screenshot of the visible region encompassed by the bounding rectangle of an element.
+      externalDocs:
+        description: See takeElementScreenshot command in WebDriver specification
+        url: 'https://w3c.github.io/webdriver/#dfn-take-element-screenshot'
+      parameters:
+        - $ref: '#/components/parameters/sessionId'
+        - $ref: '#/components/parameters/elementId'
+        - in: query
+          description: 'scroll into view the element. Default: true'
+          name: scroll
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The base64-encoded PNG image data comprising the screenshot of the visible region of an element’s bounding rectangle after it has been scrolled into view.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    description: The base64-encoded PNG image data comprising the screenshot of the initial viewport.
+                    type: string
+                example:
+                  value: iVBORw0KGgoAAAANSUhEUgAAARMAAAFBC...
+components:
+  parameters:
+    sessionId:
+      in: path
+      name: sessionId
+      required: true
+      schema:
+        type: string
+    elementId:
+      in: path
+      name: elementId
+      required: true
+      schema:
+        type: string
+    attributeName:
+      in: path
+      name: attributeName
+      required: true
+      description: name of the attribute value to retrieve
+      schema:
+        type: string
+    propertyName:
+      in: path
+      name: propertyName
+      description: name of the property value to retrieve
+      required: true
+      schema:
+        type: string
+    cssPropertyName:
+      in: path
+      name: cssPropertyName
+      description: name of the css property value to retrieve
+      required: true
+      schema:
+        type: string
+    cookieName:
+      in: path
+      name: cookieName
+      description: name of the cookie to retrieve
+      required: true
+      schema:
+        type: string
+  schemas:
+    NullResponse:
+      description: A response containing no value.
+      type: object
+      properties:
+        value:
+          nullable: true
+      example:
+        value: null
+    Proxy:
+      $ref: './components/schemas/Proxy.yml'
+    Timeouts:
+      $ref: './components/schemas/Timeouts.yml'
+    Capabilities:
+      $ref: './components/schemas/Capabilities.yml'
+    SessionStatus:
+      description: 'Implementations may optionally include additional meta information as part of the body, but the top-level properties ready and message are reserved and must not be overwritten.'
+      type: object
+      properties:
+        ready:
+          description: The remote end’s readiness state.
+          type: string
+        message:
+          description: An implementation-defined string explaining the remote end’s readiness state.
+          type: string
+    WindowHandle:
+      properties:
+        handle:
+          description: 'A string representing a window handle, should be one of the strings that was returned in a call to getWindowHandles.'
+          type: string
+          example: asdf-1234-jklo-5678
+      type: object
+      required:
+        - handle
+    NewWindowHandle:
+      allOf:
+        - $ref: '#/components/schemas/WindowHandle'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              description: 'Let type be "tab" if the newly created window shares an OS-level window with the current browsing context, or "window" otherwise.'
+              type: string
+              enum:
+                - tab
+                - window
+    Frame:
+      description: 'One of three possible types: null: this represents the top-level browsing context (i.e., not an iframe), a Number, representing the index of the window object corresponding to a frame, a string representing an element id that can be received using `findElement`.'
+      properties:
+        id:
+          anyOf:
+            - nullable: true
+            - description: The index of the window object corresponding to a frame.
+              type: integer
+              example: 0
+            - description: An element id. The element must be the frame or iframe to be selected.
+              type: string
+              example: ELEMENT-1
+      type: object
+      required:
+        - id
+      example:
+        id: ELEMENT-1
+    WindowRect:
+      properties:
+        x:
+          description: the screenX attribute of the window object
+          type: integer
+        'y':
+          description: the screenY attribute of the window object
+          type: integer
+        width:
+          description: 'the width of the outer dimensions of the top-level browsing context, including browser chrome etc...'
+          type: integer
+        height:
+          description: 'the height of the outer dimensions of the top-level browsing context, including browser chrome etc...'
+          type: integer
+      type: object
+      required:
+        - x
+        - 'y'
+        - width
+        - height
+      example:
+        x: 0
+        'y': 23
+        width: 1280
+        height: 960
+    ElementQuery:
+      properties:
+        using:
+          description: a valid element location strategy
+          type: string
+        value:
+          description: the actual selector that will be used to find an element
+          type: string
+      type: object
+      required:
+        - using
+        - value
+      example:
+        using: css selector
+        value: '#foo'
+    ElementObject:
+      properties:
+        element-6066-11e4-a52e-4f735466cecf:
+          description: a string UUID representing the found element
+          type: string
+      type: object
+      required:
+        - element-6066-11e4-a52e-4f735466cecf
+      example:
+        element-6066-11e4-a52e-4f735466cecf: ELEMENT-1
+    ElementRect:
+      properties:
+        x:
+          description: 'the absolute x-coordinate of the element, relative to the document (not the screen)'
+          type: integer
+        'y':
+          description: 'the absolute y-coordinate of the element, relative to the document (not the screen)'
+          type: integer
+        width:
+          description: the width of the bounding rectangle for the element
+          type: integer
+        height:
+          description: the height of the bounding rectangle for the element
+          type: integer
+      type: object
+      required:
+        - x
+        - 'y'
+        - width
+        - height
+      example:
+        x: 200
+        'y': 300
+        width: 20
+        height: 50
+    ScriptExecution:
+      properties:
+        script:
+          description: 'a string, the Javascript function body you want executed'
+          type: string
+        args:
+          description: An array of JSON values which will be deserialized and passed as arguments to your function
+          type: array
+          items:
+            description: 'Can be any value - string, number, boolean, array or object.'
+      type: object
+      required:
+        - script
+      example:
+        script: 'let [num1, num2] = arguments; return num1 + num2;'
+        args:
+          - 5
+          - 6
+    Cookie:
+      properties:
+        name:
+          description: The name of the cookie.
+          type: string
+        value:
+          description: The cookie value.
+          type: string
+        path:
+          description: The cookie path. Defaults to "/" if omitted when adding a cookie.
+          type: string
+        domain:
+          description: The domain the cookie is visible to. Defaults to the current browsing context’s active document’s URL domain if omitted when adding a cookie.
+          type: string
+        secure:
+          description: Whether the cookie is a secure cookie. Defaults to false if omitted when adding a cookie.
+          type: boolean
+        httpOnly:
+          description: Whether the cookie is an HTTP only cookie. Defaults to false if omitted when adding a cookie.
+          type: boolean
+        expiry:
+          description: 'When the cookie expires, specified in seconds since Unix Epoch. Must not be set if omitted when adding a cookie.'
+          type: boolean
+      type: object
+      required:
+        - name
+        - value
+      example:
+        name: exampleCookie
+        value: foobar
+        path: /
+        domain: mozilla.org
+        secure: true
+        httpOnly: true
+        expiry: 'Wed, 21 Oct 2015 07:28:00 GMT'
+    Action:
+      properties:
+        type:
+          description: type of action
+          type: string
+          enum:
+            - pointer
+            - key
+            - none
+        id:
+          description: a unique id chosen to represent this input source for this and future actions
+          type: string
+        parameters:
+          description: 'Pointer-type input sources can also have a parameters property, which is an object with a pointerType key specifying either mouse, pen, or touch. If parameters is omitted, the pointerType is considered to be mouse'
+          type: object
+          properties:
+            pointerType:
+              type: string
+              enum:
+                - mouse
+                - pen
+                - touch
+        actions:
+          description: a list of action objects for this particular input source. An action object has different fields based on the kind of input device it belongs to
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionObject'
+      type: object
+      required:
+        - type
+        - id
+        - actions
+      example:
+        type: pointer
+        id: finger1
+        parameters:
+          pointerType: touch
+        actions:
+          - type: pointerMove
+            duration: 0
+            x: 100
+            'y': 100
+          - type: pointerDown
+            button: 0
+          - type: pause
+            duration: 500
+          - type: pointerMove
+            duration: 1000
+            origin: pointer
+            x: -50
+            'y': 0
+          - type: pointerUp
+            button: 0
+    ActionObject:
+      properties:
+        type:
+          description: type of action
+          type: string
+          enum:
+            - pointerMove
+            - pointerUp
+            - pointerDown
+            - pointerCancel
+            - keyUp
+            - keyDown
+            - pause
+        duration:
+          description: action duration in ms
+          type: integer
+        origin:
+          oneOf:
+            - description: 'either (a) string, one of viewport or pointer'
+              type: string
+              enum:
+                - viewport
+                - pointer
+            - $ref: '#/components/schemas/ElementObject'
+        x:
+          description: 'integer, x-value to move to, relative to either viewport, pointer, or element based on origin'
+          type: integer
+        'y':
+          description: 'integer, y-value to move to, relative to either viewport, pointer, or element based on origin'
+          type: integer
+      type: object
+      required:
+        - type
+      example:
+        type: pointerMove
+        duration: 0
+        x: 100
+        'y': 100

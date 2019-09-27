@@ -1,0 +1,69 @@
+operationId: newSession
+summary: New Session
+externalDocs:
+  description: See newSession command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-new-sessions'
+parameters: []
+responses:
+  '200':
+    description: Object containing sessionId and capabilities of created WebDriver session.
+    content:
+      application/json:
+        schema:
+          $ref: '../main.yml#/components/schemas/Capabilities'
+requestBody:
+  description: Session capabilities
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          firstMatch:
+            $ref: '../main.yml#/components/schemas/Capabilities'
+          alwaysMatch:
+            $ref: '../main.yml#/components/schemas/Capabilities'
+description: |-
+  The [New Session](https://w3c.github.io/webdriver/#dfn-new-sessions) [command](https://w3c.github.io/webdriver/#dfn-commands) creates a new WebDriver [session](https://w3c.github.io/webdriver/#dfn-sessions) with the [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node). If the creation fails, a [session not created](https://w3c.github.io/webdriver/#dfn-session-not-created) [error](https://w3c.github.io/webdriver/#dfn-errors) is returned.
+
+  If the [remote end](https://w3c.github.io/webdriver/#dfn-remote-ends) is an [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes), it may use the result of the [capabilities processing](https://w3c.github.io/webdriver/#dfn-capabilities-processing) algorithm to route the [new session](https://w3c.github.io/webdriver/#dfn-new-sessions) request to the appropriate [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node). An [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes) is free to define [extension capabilities](https://w3c.github.io/webdriver/#dfn-extension-capability) to assist in this process, however, these specific capabilities must not be forwarded to the [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node).
+
+  If the [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes) requires additional information unrelated to user agent features, it is recommended that this information be passed as top-level parameters, and not as part of the requested [capabilities](https://w3c.github.io/webdriver/#dfn-capability). An [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes) must forward custom, top-level parameters (i.e. non-[capabilities](https://w3c.github.io/webdriver/#dfn-capability)) to subsequent [remote end](https://w3c.github.io/webdriver/#dfn-remote-ends) nodes.
+
+  > __EXAMPLE 7__
+  >
+  > An [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes) might require authentication on [creating a new session](https://w3c.github.io/webdriver/#dfn-new-sessions). This authentication is an argument to the [New Session](https://w3c.github.io/webdriver/#dfn-new-sessions) command itself and not the user agent’s [capabilities](https://w3c.github.io/webdriver/#dfn-capability). Therefore, the authentication should be passed as a top-level parameter and not embedded in `capabilities`:
+  >
+  > ```js
+  > {
+  >   "user": "alice",
+  >    "password": "hunter2",
+  >    "capabilities": {…}
+  > }
+  > ```
+  > However, because an [intermediary node](https://w3c.github.io/webdriver/#dfn-intermediary-nodes) cannot forward [extension capabilities](https://w3c.github.io/webdriver/#dfn-extension-capability) specific to that implementation to an [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node), the following is also permitted by this specification:
+  >
+  > ```js
+  > {
+  >   "capabilities": {
+  >     "alwaysMatch": {
+  >       "cloud:user": "alice",
+  >       "cloud:password": "hunter2",
+  >       "platformName": "linux"
+  >     },
+  >     "firstMatch": [
+  >       {"browserName": "chrome"},
+  >       {"browserName": "edge"}
+  >     ]
+  >   }
+  > }
+  > ```
+  >
+  > Once all [capabilities are merged](https://w3c.github.io/webdriver/#dfn-merging-capabilities) from this example, an [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node) would receive [New Session](https://w3c.github.io/webdriver/#dfn-new-sessions) capabilities identical to:
+  >
+  > ```js
+  > [
+  >   {"browserName": "chrome", "platformName": "linux"},
+  >   {"browserName": "edge", "platformName": "linux"}
+  > ]
+  > ```

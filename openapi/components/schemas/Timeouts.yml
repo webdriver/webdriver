@@ -1,0 +1,20 @@
+description: 'A timeouts configuration is a record of the different timeouts that control the behavior of script evaluation, navigation, and element retrieval.'
+type: object
+properties:
+  script:
+    description: Specifies when to interrupt a script that is being evaluated.
+    type: integer
+    nullable: true
+    default: 30000
+  pageLoad:
+    description: Provides the timeout limit used to interrupt an explicit navigation attempt.
+    type: integer
+    default: 300000
+  implicit:
+    description: Specifies a time to wait for the element location strategy to complete when location an element.
+    type: integer
+    default: 0
+example:
+  script: 30000
+  pageLoad: 300000
+  implicit: 0
