@@ -1,0 +1,6 @@
+in: path
+name: attributeName
+required: true
+description: name of the attribute value to retrieve
+schema:
+  type: string

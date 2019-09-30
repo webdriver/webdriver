@@ -1,0 +1,14 @@
+properties:
+  using:
+    description: a valid element location strategy
+    type: string
+  value:
+    description: the actual selector that will be used to find an element
+    type: string
+type: object
+required:
+  - using
+  - value
+example:
+  using: css selector
+  value: '#foo'

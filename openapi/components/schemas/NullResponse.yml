@@ -1,0 +1,7 @@
+description: A response containing no value.
+type: object
+properties:
+  value:
+    nullable: true
+example:
+  value: null

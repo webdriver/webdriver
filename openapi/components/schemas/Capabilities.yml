@@ -20,12 +20,12 @@ properties:
       - normal
       - eager
   proxy:
-    $ref: './Proxy.yml'
+    $ref: ./Proxy.yml
   setWindowRect:
     description: Indicates whether the remote end supports all of the resizing and repositioning commands.
     type: boolean
   timeouts:
-    $ref: './Timeouts.yml'
+    $ref: ./Timeouts.yml
   strictFileInteractability:
     description: Defines the current session’s strict file interactability.
     type: boolean

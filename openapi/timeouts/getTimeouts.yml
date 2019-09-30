@@ -1,0 +1,18 @@
+operationId: getTimeouts
+summary: Get Timeouts
+externalDocs:
+  description: See getTimeouts command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-timeouts'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Timeouts
+responses:
+  200:
+    description: Object containing timeout durations for `script`, `pageLoad` and `implicit` timeouts.
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Timeouts.yml
+description: |-
+  The [remote end step](https://www.w3.org/TR/webdriver/#dfn-remote-end-steps) is to return [success](https://www.w3.org/TR/webdriver/#dfn-success) with data being the [JSON serialization](https://www.w3.org/TR/webdriver/#dfn-json-serialization) of the [active session](https://www.w3.org/TR/webdriver/#dfn-active-session)’s [timeouts configuration](https://www.w3.org/TR/webdriver/#dfn-timeouts-configuration).

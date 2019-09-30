@@ -1,4 +1,4 @@
-description: 'A timeouts configuration is a record of the different timeouts that control the behavior of script evaluation, navigation, and element retrieval.'
+description: A timeouts configuration is a record of the different timeouts that control the behavior of script evaluation, navigation, and element retrieval.
 type: object
 properties:
   script:

@@ -1,0 +1,6 @@
+in: path
+name: cssPropertyName
+description: name of the css property value to retrieve
+required: true
+schema:
+  type: string

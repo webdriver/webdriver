@@ -1,0 +1,6 @@
+in: path
+name: cookieName
+description: name of the cookie to retrieve
+required: true
+schema:
+  type: string

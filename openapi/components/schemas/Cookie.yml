@@ -1,0 +1,34 @@
+properties:
+  name:
+    description: The name of the cookie.
+    type: string
+  value:
+    description: The cookie value.
+    type: string
+  path:
+    description: The cookie path. Defaults to "/" if omitted when adding a cookie.
+    type: string
+  domain:
+    description: The domain the cookie is visible to. Defaults to the current browsing context’s active document’s URL domain if omitted when adding a cookie.
+    type: string
+  secure:
+    description: Whether the cookie is a secure cookie. Defaults to false if omitted when adding a cookie.
+    type: boolean
+  httpOnly:
+    description: Whether the cookie is an HTTP only cookie. Defaults to false if omitted when adding a cookie.
+    type: boolean
+  expiry:
+    description: When the cookie expires, specified in seconds since Unix Epoch. Must not be set if omitted when adding a cookie.
+    type: boolean
+type: object
+required:
+  - name
+  - value
+example:
+  name: exampleCookie
+  value: foobar
+  path: /
+  domain: mozilla.org
+  secure: true
+  httpOnly: true
+  expiry: Wed, 21 Oct 2015 07:28:00 GMT

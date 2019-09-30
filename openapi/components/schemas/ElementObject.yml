@@ -1,0 +1,9 @@
+properties:
+  element-6066-11e4-a52e-4f735466cecf:
+    description: a string UUID representing the found element
+    type: string
+type: object
+required:
+  - element-6066-11e4-a52e-4f735466cecf
+example:
+  element-6066-11e4-a52e-4f735466cecf: ELEMENT-1

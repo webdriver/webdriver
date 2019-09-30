@@ -1,0 +1,13 @@
+name: Timeouts
+externalDocs:
+  url: https://www.w3.org/TR/webdriver/#timeouts
+description: |-
+  A timeouts configuration is a record of the different timeouts that control the behavior of [script evaluation](https://www.w3.org/TR/webdriver/#executing-script), [navigation](https://www.w3.org/TR/webdriver/#navigation), and [element retrieval](https://www.w3.org/TR/webdriver/#elements):
+      
+  Field                 | Default | JSON key     | Optional† | Nullable | Description†
+  ----------------------|---------|--------------|-----------|----------|--------------
+  Script timeout        | 30,000  | `"script"`   | ✓         | ✓        | Specifies when to interrupt a script that is being [evaluated](https://www.w3.org/TR/webdriver/#executing-script).<br><br>A [`null`](https://www.w3.org/TR/webdriver/#dfn-null) value implies that scripts should never be interrupted, but instead run indefinitely.
+  Page load timeout     | 300,000 | `"pageLoad"` | ✓         |          | Provides the timeout limit used to interrupt an explicit [navigation](https://www.w3.org/TR/webdriver/#dfn-navigating) attempt.
+  Implicit wait timeout | 0       | `"implicit"` | ✓         |          | Specifies a time to wait for the [element location strategy](https://www.w3.org/TR/webdriver/#dfn-strategy) to complete when [location an element](https://www.w3.org/TR/webdriver/#element-retrieval).
+  
+  The [timeouts configuration](https://www.w3.org/TR/webdriver/#dfn-timeouts-configuration)’s [JSON serialization](https://www.w3.org/TR/webdriver/#dfn-json-serialization) is expressed as a JSON [Object](https://www.w3.org/TR/webdriver/#dfn-object) with the following properties:

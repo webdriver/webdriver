@@ -1,0 +1,6 @@
+in: path
+name: propertyName
+description: name of the property value to retrieve
+required: true
+schema:
+  type: string

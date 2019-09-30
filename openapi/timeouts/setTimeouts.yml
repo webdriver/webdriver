@@ -1,0 +1,28 @@
+operationId: setTimeouts
+summary: Set Timeouts
+externalDocs:
+  description: See setTimeouts command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-set-timeouts'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Timeouts
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/NullResponse.yml
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../components/schemas/Timeouts.yml
+description: |-
+  The [remote end steps](https://www.w3.org/TR/webdriver/#dfn-remote-end-steps) are:
+  
+  1. Let timeouts be the result of [trying](https://www.w3.org/TR/webdriver/#dfn-try) to [JSON deserialize](https://www.w3.org/TR/webdriver/#dfn-json-deserialize) as a [timeouts configuration](https://www.w3.org/TR/webdriver/#dfn-timeouts-configuration) the request’s parameters.
+  2. Make the [session timeouts](https://www.w3.org/TR/webdriver/#dfn-session-script-timeout) the new timeouts.
+  3. Return [success](https://www.w3.org/TR/webdriver/#dfn-success) with data [`null`](https://www.w3.org/TR/webdriver/#dfn-null).

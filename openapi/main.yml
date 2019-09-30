@@ -15,58 +15,28 @@ externalDocs:
   description: W3C Living Document
   url: 'https://w3c.github.io/webdriver/'
 servers:
-  - url: 'http://localhost:4444/'
+  - url: 'http://localhost:4444'
     description: browser driver when run locally
-  - url: 'https://ondemand.saucelabs.com/'
+  - url: 'https://ondemand.saucelabs.com'
     description: OnDemand url if run using Sauce Labs
-tags: []
+tags:
+  - $ref: ./components/tags/Sessions.yml
+  - $ref: ./components/tags/Timeouts.yml
 paths:
   /session:
     post:
       $ref: ./session/newSession.yml
-  '/session/{sessionId}':
+  /session/{sessionId}:
     delete:
       $ref: ./session/deleteSession.yml
   /status:
     get:
       $ref: ./session/status.yml
-  '/session/{sessionId}/timeouts':
+  /session/{sessionId}/timeouts:
     get:
-      operationId: getTimeouts
-      summary: The Get Timeouts command gets timeout durations associated with the current session.
-      externalDocs:
-        description: See getTimeouts command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-timeouts'
-      parameters:
-        - $ref: '#/components/parameters/sessionId'
-      responses:
-        '200':
-          description: 'Object containing timeout durations for `script`, `pageLoad` and `implicit` timeouts.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Timeouts'
+      $ref: ./timeouts/getTimeouts.yml
     post:
-      operationId: setTimeouts
-      summary: The Set Timeouts command sets timeout durations associated with the current session. The timeouts that can be controlled are listed in the table of session timeouts below.
-      externalDocs:
-        description: See setTimeouts command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-set-timeouts'
-      parameters:
-        - $ref: '#/components/parameters/sessionId'
-      responses:
-        '200':
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NullResponse'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Timeouts'
+      $ref: ./timeouts/setTimeouts.yml
   '/session/{sessionId}/url':
     get:
       operationId: getUrl
@@ -75,9 +45,9 @@ paths:
         description: See getUrl command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-current-url'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: Current top-level browsing context’s active document’s document URL
           content:
             application/json:
@@ -95,14 +65,14 @@ paths:
         description: See navigateTo command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-navigate-to'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         required: true
         content:
@@ -122,14 +92,14 @@ paths:
         description: See back command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-back'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/forward':
     post:
       operationId: forward
@@ -138,14 +108,14 @@ paths:
         description: See forward command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-forward'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/refresh':
     post:
       operationId: refresh
@@ -154,14 +124,14 @@ paths:
         description: See refresh command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-refresh'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/title':
     get:
       operationId: getTitle
@@ -170,9 +140,9 @@ paths:
         description: See getTitle command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-title'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: 'This command returns the document title of the current top-level browsing context, equivalent to calling document.title.'
           content:
             application/json:
@@ -189,9 +159,9 @@ paths:
         description: See getWindowHandle command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-window-handle'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: Returns a string which is the window handle for the current top-level browsing context.
           content:
             application/json:
@@ -218,14 +188,14 @@ paths:
         description: See closeWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-close-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
     post:
       operationId: switchToWindow
       summary: 'The Switch To Window command is used to select the current top-level browsing context for the current session, i.e. the one that will be used for processing commands.'
@@ -233,20 +203,20 @@ paths:
         description: See switchToWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-switch-to-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WindowHandle'
+              $ref: './components/schemas/WindowHandle.yml'
   '/session/{sessionId}/window/new':
     post:
       operationId: createWindow
@@ -255,23 +225,23 @@ paths:
         description: See createWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#new-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: New window object containing 'handle' with the value of the handle and 'type' with the value of the created window type
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/NewWindowHandle'
+                    $ref: './components/schemas/NewWindowHandle.yml'
       requestBody:
         description: ''
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewWindowHandle'
+              $ref: './components/schemas/NewWindowHandle.yml'
   '/session/{sessionId}/window/handles':
     get:
       operationId: getWindowHandles
@@ -280,9 +250,9 @@ paths:
         description: See getWindowHandles command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-window-handles'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: An array which is a list of window handles.
           content:
             application/json:
@@ -291,7 +261,7 @@ paths:
                   value:
                     type: array
                     items:
-                      $ref: '#/components/schemas/WindowHandle'
+                      $ref: './components/schemas/WindowHandle.yml'
   '/session/{sessionId}/frame':
     post:
       operationId: switchToFrame
@@ -300,21 +270,21 @@ paths:
         description: See switchToFrame command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-switch-to-frame'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         description: ''
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Frame'
+              $ref: './components/schemas/Frame.yml'
   '/session/{sessionId}/frame/parent':
     post:
       operationId: switchToParentFrame
@@ -323,14 +293,14 @@ paths:
         description: See switchToParentFrame command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-switch-to-parent-frame'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/window/rect':
     get:
       operationId: getWindowRect
@@ -339,16 +309,16 @@ paths:
         description: See getWindowRect command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-window-rect'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: 'A JSON representation of a "window rect" object. This has 4 properties: `x`, `y`, `width` and `height`.'
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/WindowRect'
+                    $ref: './components/schemas/WindowRect.yml'
     post:
       operationId: setWindowRect
       summary: The Set Window Rect command alters the size and the position of the operating system window corresponding to the current top-level browsing context.
@@ -356,22 +326,22 @@ paths:
         description: See setWindowRect command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-set-window-rect'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of a "window rect" object based on the new window state.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/WindowRect'
+                    $ref: './components/schemas/WindowRect.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WindowRect'
+              $ref: './components/schemas/WindowRect.yml'
   '/session/{sessionId}/window/maximize':
     post:
       operationId: maximizeWindow
@@ -380,16 +350,16 @@ paths:
         description: See maximizeWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-maximize-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of a "window rect" object based on the new window state.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/WindowRect'
+                    $ref: './components/schemas/WindowRect.yml'
   '/session/{sessionId}/window/minimize':
     post:
       operationId: minimizeWindow
@@ -398,16 +368,16 @@ paths:
         description: See minimizeWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-minimize-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of a "window rect" object of the (new) current top-level browsing context.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/WindowRect'
+                    $ref: './components/schemas/WindowRect.yml'
   '/session/{sessionId}/window/fullscreen':
     post:
       operationId: fullscreenWindow
@@ -416,16 +386,16 @@ paths:
         description: See fullscreenWindow command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-fullscreen-window'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of a "window rect" object of the (new) current top-level browsing context.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/WindowRect'
+                    $ref: './components/schemas/WindowRect.yml'
   '/session/{sessionId}/element':
     post:
       operationId: findElement
@@ -434,22 +404,22 @@ paths:
         description: See findElement command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-find-element'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of an element object.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/ElementObject'
+                    $ref: './components/schemas/ElementObject.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementQuery'
+              $ref: './components/schemas/ElementQuery.yml'
   '/session/{sessionId}/elements':
     post:
       operationId: findElements
@@ -458,9 +428,9 @@ paths:
         description: See findElements command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-find-elements'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A (possibly empty) JSON list of representations of an element object.
           content:
             application/json:
@@ -469,13 +439,13 @@ paths:
                   value:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ElementObject'
+                      $ref: './components/schemas/ElementObject.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementQuery'
+              $ref: './components/schemas/ElementQuery.yml'
   '/session/{sessionId}/element/{elementId}/element':
     post:
       operationId: findElementFromElement
@@ -484,23 +454,23 @@ paths:
         description: See findElementFromElement command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-find-element-from-element'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of an element object.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/ElementObject'
+                    $ref: './components/schemas/ElementObject.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementQuery'
+              $ref: './components/schemas/ElementQuery.yml'
   '/session/{sessionId}/element/{elementId}/elements':
     post:
       operationId: findElementsFromElement
@@ -509,10 +479,10 @@ paths:
         description: See findElementsFromElement command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-find-elements-from-element'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: A (possibly empty) JSON list of representations of an element object.
           content:
             application/json:
@@ -521,13 +491,13 @@ paths:
                   value:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ElementObject'
+                      $ref: './components/schemas/ElementObject.yml'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementQuery'
+              $ref: './components/schemas/ElementQuery.yml'
   '/session/{sessionId}/element/active':
     get:
       operationId: getActiveElement
@@ -536,16 +506,16 @@ paths:
         description: See getActiveElement command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-active-element'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A JSON representation of an element object.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/ElementObject'
+                    $ref: './components/schemas/ElementObject.yml'
   '/session/{sessionId}/element/{elementId}/selected':
     get:
       operationId: isElementSelected
@@ -554,10 +524,10 @@ paths:
         description: See isElementSelected command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-is-element-selected'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: '`true` or `false` based on the selected state.'
           content:
             application/json:
@@ -575,11 +545,11 @@ paths:
         description: See getElementAttribute command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-attribute'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
-        - $ref: '#/components/parameters/attributeName'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
+        - $ref: ./components/parameters/attributeName.yml
       responses:
-        '200':
+        200:
           description: The named attribute of the element.
           content:
             application/json:
@@ -602,11 +572,11 @@ paths:
         description: See getElementProperty command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-property'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
-        - $ref: '#/components/parameters/propertyName'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
+        - $ref: ./components/parameters/propertyName.yml
       responses:
-        '200':
+        200:
           description: 'The named property of the element, accessed by calling GetOwnProperty on the element object.'
           content:
             application/json:
@@ -624,11 +594,11 @@ paths:
         description: See getElementCSSValue command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-css-value'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
-        - $ref: '#/components/parameters/cssPropertyName'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
+        - $ref: ./components/parameters/cssPropertyName.yml
       responses:
-        '200':
+        200:
           description: 'The computed value of the parameter corresponding to property name from the element''s style declarations (unless the document type is xml, in which case the return value is simply the empty string).'
           content:
             application/json:
@@ -646,10 +616,10 @@ paths:
         description: See getElementText command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-text'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: 'The visible text of the element (including child elements), following the algorithm defined in the Selenium Atoms for [`bot.dom.getVisibleText`](https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L981).'
           content:
             application/json:
@@ -667,10 +637,10 @@ paths:
         description: See getElementTagName command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-tag-name'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: The tagName attribute of the element.
           content:
             application/json:
@@ -688,17 +658,17 @@ paths:
         description: See getElementRect command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-element-rect'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: A JSON object representing the position and bounding rect of the element.
           content:
             application/json:
               schema:
                 properties:
                   value:
-                    $ref: '#/components/schemas/ElementRect'
+                    $ref: './components/schemas/ElementRect.yml'
   '/session/{sessionId}/element/{elementId}/enabled':
     get:
       operationId: isElementEnabled
@@ -707,10 +677,10 @@ paths:
         description: See isElementEnabled command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-is-element-enabled'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: 'If the element is in an xml document, or is a disabled form control: `false`, otherwise, `true`.'
           content:
             application/json:
@@ -728,15 +698,15 @@ paths:
         description: See elementClick command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-element-click'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/element/{elementId}/clear':
     post:
       operationId: elementClear
@@ -745,15 +715,15 @@ paths:
         description: See elementClear command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-element-clear'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/element/{elementId}/value':
     post:
       operationId: elementSendKeys
@@ -762,15 +732,15 @@ paths:
         description: See elementSendKeys command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-element-send-keys'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         required: true
         content:
@@ -791,9 +761,9 @@ paths:
         description: See getPageSource command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-page-source'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: The serialized document source.
           content:
             application/json:
@@ -813,9 +783,9 @@ paths:
         description: See executeScript command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-execute-script'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: 'Either the return value of your script, the fulfillment of the Promise returned by your script, or the error which was the reason for your script''s returned Promise''s rejection.'
           content:
             application/json:
@@ -830,7 +800,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScriptExecution'
+              $ref: './components/schemas/ScriptExecution.yml'
   '/session/{sessionId}/execute/async':
     post:
       operationId: executeAsyncScript
@@ -839,9 +809,9 @@ paths:
         description: See executeAsyncScript command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-execute-async-script'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: 'Either the return value of your script, the fulfillment of the Promise returned by your script, or the error which was the reason for your script''s returned Promise''s rejection.'
           content:
             application/json:
@@ -856,7 +826,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScriptExecution'
+              $ref: './components/schemas/ScriptExecution.yml'
   '/session/{sessionId}/cookie':
     get:
       operationId: getAllCookies
@@ -865,9 +835,9 @@ paths:
         description: See getAllCookies command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-all-cookies'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: A list of serialized cookies. Each serialized cookie has a number of optional fields which may or may not be returned in addition to `name` and `value`.
           content:
             application/json:
@@ -877,7 +847,7 @@ paths:
                   value:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Cookie'
+                      $ref: './components/schemas/Cookie.yml'
     post:
       operationId: addCookie
       summary: The Add Cookie command adds a single cookie to the cookie store associated with the active document's address.
@@ -885,21 +855,21 @@ paths:
         description: See addCookie command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-adding-a-cookie'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         description: ''
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cookie'
+              $ref: './components/schemas/Cookie.yml'
     delete:
       operationId: deleteAllCookies
       summary: The Delete All Cookies command allows deletion of all cookies associated with the active document's address.
@@ -907,14 +877,14 @@ paths:
         description: See deleteAllCookies command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-delete-all-cookies'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/cookie/{cookieName}':
     get:
       operationId: getNamedCookie
@@ -923,10 +893,10 @@ paths:
         description: See getNamedCookie command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-named-cookie'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/cookieName'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/cookieName.yml
       responses:
-        '200':
+        200:
           description: 'A serialized cookie, with name and value fields. There are a number of optional fields like `path`, `domain`, and `expiry-time` which may also be present.'
           content:
             application/json:
@@ -934,7 +904,7 @@ paths:
                 type: object
                 properties:
                   value:
-                    $ref: '#/components/schemas/Cookie'
+                    $ref: './components/schemas/Cookie.yml'
     delete:
       operationId: deleteCookie
       summary: 'The Delete Cookie command allows you to delete either a single cookie by parameter name, or all the cookies associated with the active document''s address if name is undefined.'
@@ -942,15 +912,15 @@ paths:
         description: See deleteCookie command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-delete-cookie'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/cookieName'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/cookieName.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/actions':
     post:
       operationId: performActions
@@ -959,21 +929,21 @@ paths:
         description: See performActions command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-perform-actions'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         description: ''
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Action'
+              $ref: './components/schemas/Action.yml'
     delete:
       operationId: releaseActions
       summary: The Release Actions command is used to release all the keys and pointer buttons that are currently depressed. This causes events to be fired as if the state was released by an explicit series of actions. It also clears all the internal state of the virtual devices.
@@ -981,14 +951,14 @@ paths:
         description: See releaseActions command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-release-actions'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/alert/dismiss':
     post:
       operationId: dismissAlert
@@ -997,14 +967,14 @@ paths:
         description: See dismissAlert command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-dismiss-alert'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/alert/accept':
     post:
       operationId: acceptAlert
@@ -1013,14 +983,14 @@ paths:
         description: See acceptAlert command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-accept-alert'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
   '/session/{sessionId}/alert/text':
     get:
       operationId: getAlertText
@@ -1029,9 +999,9 @@ paths:
         description: See getAlertText command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-get-alert-text'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: The message of the user prompt.
           content:
             application/json:
@@ -1048,14 +1018,14 @@ paths:
         description: See sendAlertText command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-send-alert-text'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: empty response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NullResponse'
+                $ref: './components/schemas/NullResponse.yml'
       requestBody:
         description: string to set the prompt to
         required: true
@@ -1076,9 +1046,9 @@ paths:
         description: See takeScreenshot command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-take-screenshot'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
+        - $ref: ./components/parameters/sessionId.yml
       responses:
-        '200':
+        200:
           description: The base64-encoded PNG image data comprising the screenshot of the initial viewport.
           content:
             application/json:
@@ -1098,8 +1068,8 @@ paths:
         description: See takeElementScreenshot command in WebDriver specification
         url: 'https://w3c.github.io/webdriver/#dfn-take-element-screenshot'
       parameters:
-        - $ref: '#/components/parameters/sessionId'
-        - $ref: '#/components/parameters/elementId'
+        - $ref: ./components/parameters/sessionId.yml
+        - $ref: ./components/parameters/elementId.yml
         - in: query
           description: 'scroll into view the element. Default: true'
           name: scroll
@@ -1107,7 +1077,7 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        200:
           description: The base64-encoded PNG image data comprising the screenshot of the visible region of an element’s bounding rectangle after it has been scrolled into view.
           content:
             application/json:
@@ -1119,328 +1089,3 @@ paths:
                     type: string
                 example:
                   value: iVBORw0KGgoAAAANSUhEUgAAARMAAAFBC...
-components:
-  parameters:
-    sessionId:
-      in: path
-      name: sessionId
-      required: true
-      schema:
-        type: string
-    elementId:
-      in: path
-      name: elementId
-      required: true
-      schema:
-        type: string
-    attributeName:
-      in: path
-      name: attributeName
-      required: true
-      description: name of the attribute value to retrieve
-      schema:
-        type: string
-    propertyName:
-      in: path
-      name: propertyName
-      description: name of the property value to retrieve
-      required: true
-      schema:
-        type: string
-    cssPropertyName:
-      in: path
-      name: cssPropertyName
-      description: name of the css property value to retrieve
-      required: true
-      schema:
-        type: string
-    cookieName:
-      in: path
-      name: cookieName
-      description: name of the cookie to retrieve
-      required: true
-      schema:
-        type: string
-  schemas:
-    NullResponse:
-      description: A response containing no value.
-      type: object
-      properties:
-        value:
-          nullable: true
-      example:
-        value: null
-    Proxy:
-      $ref: './components/schemas/Proxy.yml'
-    Timeouts:
-      $ref: './components/schemas/Timeouts.yml'
-    Capabilities:
-      $ref: './components/schemas/Capabilities.yml'
-    SessionStatus:
-      description: 'Implementations may optionally include additional meta information as part of the body, but the top-level properties ready and message are reserved and must not be overwritten.'
-      type: object
-      properties:
-        ready:
-          description: The remote end’s readiness state.
-          type: string
-        message:
-          description: An implementation-defined string explaining the remote end’s readiness state.
-          type: string
-    WindowHandle:
-      properties:
-        handle:
-          description: 'A string representing a window handle, should be one of the strings that was returned in a call to getWindowHandles.'
-          type: string
-          example: asdf-1234-jklo-5678
-      type: object
-      required:
-        - handle
-    NewWindowHandle:
-      allOf:
-        - $ref: '#/components/schemas/WindowHandle'
-        - type: object
-          required:
-            - type
-          properties:
-            type:
-              description: 'Let type be "tab" if the newly created window shares an OS-level window with the current browsing context, or "window" otherwise.'
-              type: string
-              enum:
-                - tab
-                - window
-    Frame:
-      description: 'One of three possible types: null: this represents the top-level browsing context (i.e., not an iframe), a Number, representing the index of the window object corresponding to a frame, a string representing an element id that can be received using `findElement`.'
-      properties:
-        id:
-          anyOf:
-            - nullable: true
-            - description: The index of the window object corresponding to a frame.
-              type: integer
-              example: 0
-            - description: An element id. The element must be the frame or iframe to be selected.
-              type: string
-              example: ELEMENT-1
-      type: object
-      required:
-        - id
-      example:
-        id: ELEMENT-1
-    WindowRect:
-      properties:
-        x:
-          description: the screenX attribute of the window object
-          type: integer
-        'y':
-          description: the screenY attribute of the window object
-          type: integer
-        width:
-          description: 'the width of the outer dimensions of the top-level browsing context, including browser chrome etc...'
-          type: integer
-        height:
-          description: 'the height of the outer dimensions of the top-level browsing context, including browser chrome etc...'
-          type: integer
-      type: object
-      required:
-        - x
-        - 'y'
-        - width
-        - height
-      example:
-        x: 0
-        'y': 23
-        width: 1280
-        height: 960
-    ElementQuery:
-      properties:
-        using:
-          description: a valid element location strategy
-          type: string
-        value:
-          description: the actual selector that will be used to find an element
-          type: string
-      type: object
-      required:
-        - using
-        - value
-      example:
-        using: css selector
-        value: '#foo'
-    ElementObject:
-      properties:
-        element-6066-11e4-a52e-4f735466cecf:
-          description: a string UUID representing the found element
-          type: string
-      type: object
-      required:
-        - element-6066-11e4-a52e-4f735466cecf
-      example:
-        element-6066-11e4-a52e-4f735466cecf: ELEMENT-1
-    ElementRect:
-      properties:
-        x:
-          description: 'the absolute x-coordinate of the element, relative to the document (not the screen)'
-          type: integer
-        'y':
-          description: 'the absolute y-coordinate of the element, relative to the document (not the screen)'
-          type: integer
-        width:
-          description: the width of the bounding rectangle for the element
-          type: integer
-        height:
-          description: the height of the bounding rectangle for the element
-          type: integer
-      type: object
-      required:
-        - x
-        - 'y'
-        - width
-        - height
-      example:
-        x: 200
-        'y': 300
-        width: 20
-        height: 50
-    ScriptExecution:
-      properties:
-        script:
-          description: 'a string, the Javascript function body you want executed'
-          type: string
-        args:
-          description: An array of JSON values which will be deserialized and passed as arguments to your function
-          type: array
-          items:
-            description: 'Can be any value - string, number, boolean, array or object.'
-      type: object
-      required:
-        - script
-      example:
-        script: 'let [num1, num2] = arguments; return num1 + num2;'
-        args:
-          - 5
-          - 6
-    Cookie:
-      properties:
-        name:
-          description: The name of the cookie.
-          type: string
-        value:
-          description: The cookie value.
-          type: string
-        path:
-          description: The cookie path. Defaults to "/" if omitted when adding a cookie.
-          type: string
-        domain:
-          description: The domain the cookie is visible to. Defaults to the current browsing context’s active document’s URL domain if omitted when adding a cookie.
-          type: string
-        secure:
-          description: Whether the cookie is a secure cookie. Defaults to false if omitted when adding a cookie.
-          type: boolean
-        httpOnly:
-          description: Whether the cookie is an HTTP only cookie. Defaults to false if omitted when adding a cookie.
-          type: boolean
-        expiry:
-          description: 'When the cookie expires, specified in seconds since Unix Epoch. Must not be set if omitted when adding a cookie.'
-          type: boolean
-      type: object
-      required:
-        - name
-        - value
-      example:
-        name: exampleCookie
-        value: foobar
-        path: /
-        domain: mozilla.org
-        secure: true
-        httpOnly: true
-        expiry: 'Wed, 21 Oct 2015 07:28:00 GMT'
-    Action:
-      properties:
-        type:
-          description: type of action
-          type: string
-          enum:
-            - pointer
-            - key
-            - none
-        id:
-          description: a unique id chosen to represent this input source for this and future actions
-          type: string
-        parameters:
-          description: 'Pointer-type input sources can also have a parameters property, which is an object with a pointerType key specifying either mouse, pen, or touch. If parameters is omitted, the pointerType is considered to be mouse'
-          type: object
-          properties:
-            pointerType:
-              type: string
-              enum:
-                - mouse
-                - pen
-                - touch
-        actions:
-          description: a list of action objects for this particular input source. An action object has different fields based on the kind of input device it belongs to
-          type: array
-          items:
-            $ref: '#/components/schemas/ActionObject'
-      type: object
-      required:
-        - type
-        - id
-        - actions
-      example:
-        type: pointer
-        id: finger1
-        parameters:
-          pointerType: touch
-        actions:
-          - type: pointerMove
-            duration: 0
-            x: 100
-            'y': 100
-          - type: pointerDown
-            button: 0
-          - type: pause
-            duration: 500
-          - type: pointerMove
-            duration: 1000
-            origin: pointer
-            x: -50
-            'y': 0
-          - type: pointerUp
-            button: 0
-    ActionObject:
-      properties:
-        type:
-          description: type of action
-          type: string
-          enum:
-            - pointerMove
-            - pointerUp
-            - pointerDown
-            - pointerCancel
-            - keyUp
-            - keyDown
-            - pause
-        duration:
-          description: action duration in ms
-          type: integer
-        origin:
-          oneOf:
-            - description: 'either (a) string, one of viewport or pointer'
-              type: string
-              enum:
-                - viewport
-                - pointer
-            - $ref: '#/components/schemas/ElementObject'
-        x:
-          description: 'integer, x-value to move to, relative to either viewport, pointer, or element based on origin'
-          type: integer
-        'y':
-          description: 'integer, y-value to move to, relative to either viewport, pointer, or element based on origin'
-          type: integer
-      type: object
-      required:
-        - type
-      example:
-        type: pointerMove
-        duration: 0
-        x: 100
-        'y': 100

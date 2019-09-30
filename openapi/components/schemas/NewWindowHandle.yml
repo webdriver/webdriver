@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./WindowHandle.yml
+  - type: object
+    required:
+      - type
+    properties:
+      type:
+        description: 'Let type be "tab" if the newly created window shares an OS-level window with the current browsing context, or "window" otherwise.'
+        type: string
+        enum:
+          - tab
+          - window

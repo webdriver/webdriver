@@ -1,0 +1,5 @@
+in: path
+name: sessionId
+required: true
+schema:
+  type: string

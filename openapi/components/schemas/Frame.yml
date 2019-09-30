@@ -1,0 +1,16 @@
+description: One of three possible types: null: this represents the top-level browsing context (i.e., not an iframe), a Number, representing the index of the window object corresponding to a frame, a string representing an element id that can be received using `findElement`.
+properties:
+  id:
+    anyOf:
+      - nullable: true
+      - description: The index of the window object corresponding to a frame.
+        type: integer
+        example: 0
+      - description: An element id. The element must be the frame or iframe to be selected.
+        type: string
+        example: ELEMENT-1
+type: object
+required:
+  - id
+example:
+  id: ELEMENT-1

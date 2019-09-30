@@ -1,0 +1,8 @@
+properties:
+  handle:
+    description: 'A string representing a window handle, should be one of the strings that was returned in a call to getWindowHandles.'
+    type: string
+    example: asdf-1234-jklo-5678
+type: object
+required:
+  - handle

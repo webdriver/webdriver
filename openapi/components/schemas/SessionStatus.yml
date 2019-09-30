@@ -1,0 +1,9 @@
+description: Implementations may optionally include additional meta information as part of the body, but the top-level properties ready and message are reserved and must not be overwritten.
+type: object
+properties:
+  ready:
+    description: The remote end’s readiness state.
+    type: string
+  message:
+    description: An implementation-defined string explaining the remote end’s readiness state.
+    type: string

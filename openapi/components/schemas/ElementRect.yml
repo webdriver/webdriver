@@ -1,0 +1,24 @@
+properties:
+  x:
+    description: the absolute x-coordinate of the element, relative to the document (not the screen)
+    type: integer
+  y:
+    description: the absolute y-coordinate of the element, relative to the document (not the screen)
+    type: integer
+  width:
+    description: the width of the bounding rectangle for the element
+    type: integer
+  height:
+    description: the height of the bounding rectangle for the element
+    type: integer
+type: object
+required:
+  - x
+  - y
+  - width
+  - height
+example:
+  x: 200
+  y: 300
+  width: 20
+  height: 50

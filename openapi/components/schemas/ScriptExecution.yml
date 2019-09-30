@@ -1,0 +1,17 @@
+properties:
+  script:
+    description: a string, the Javascript function body you want executed
+    type: string
+  args:
+    description: An array of JSON values which will be deserialized and passed as arguments to your function
+    type: array
+    items:
+      description: Can be any value - string, number, boolean, array or object.
+type: object
+required:
+  - script
+example:
+  script: 'let [num1, num2] = arguments; return num1 + num2;'
+  args:
+    - 5
+    - 6

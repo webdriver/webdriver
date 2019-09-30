@@ -2,10 +2,12 @@ operationId: status
 summary: Status
 externalDocs:
   description: See status command in WebDriver specification
-  url: 'https://w3c.github.io/webdriver/#dfn-status'
+  url: https://w3c.github.io/webdriver/#dfn-status
 parameters: []
+tags:
+  - Sessions
 responses:
-  '200':
+  200:
     description: Object containing status of the driver status.
     content:
       application/json:
@@ -13,4 +15,4 @@ responses:
           type: object
           properties:
             value:
-              $ref: '../main.yml#/components/schemas/SessionStatus'
+              $ref: ../components/schemas/SessionStatus.yml

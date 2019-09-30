@@ -1,0 +1,37 @@
+properties:
+  type:
+    description: type of action
+    type: string
+    enum:
+      - pointerMove
+      - pointerUp
+      - pointerDown
+      - pointerCancel
+      - keyUp
+      - keyDown
+      - pause
+  duration:
+    description: action duration in ms
+    type: integer
+  origin:
+    oneOf:
+      - description: either (a) string, one of viewport or pointer
+        type: string
+        enum:
+          - viewport
+          - pointer
+      - $ref: ./ElementObject.yml
+  x:
+    description: 'integer, x-value to move to, relative to either viewport, pointer, or element based on origin'
+    type: integer
+  y:
+    description: integer, y-value to move to, relative to either viewport, pointer, or element based on origin
+    type: integer
+type: object
+required:
+  - type
+example:
+  type: pointerMove
+  duration: 0
+  x: 100
+  y: 100

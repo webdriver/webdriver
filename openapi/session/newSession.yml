@@ -2,15 +2,17 @@ operationId: newSession
 summary: New Session
 externalDocs:
   description: See newSession command in WebDriver specification
-  url: 'https://w3c.github.io/webdriver/#dfn-new-sessions'
+  url: https://w3c.github.io/webdriver/#dfn-new-sessions
 parameters: []
+tags:
+  - Sessions
 responses:
-  '200':
+  200:
     description: Object containing sessionId and capabilities of created WebDriver session.
     content:
       application/json:
         schema:
-          $ref: '../main.yml#/components/schemas/Capabilities'
+          $ref: ../components/schemas/Capabilities.yml
 requestBody:
   description: Session capabilities
   required: true
@@ -20,9 +22,9 @@ requestBody:
         type: object
         properties:
           firstMatch:
-            $ref: '../main.yml#/components/schemas/Capabilities'
+            $ref: ../components/schemas/Capabilities.yml
           alwaysMatch:
-            $ref: '../main.yml#/components/schemas/Capabilities'
+            $ref: ../components/schemas/Capabilities.yml
 description: |-
   The [New Session](https://w3c.github.io/webdriver/#dfn-new-sessions) [command](https://w3c.github.io/webdriver/#dfn-commands) creates a new WebDriver [session](https://w3c.github.io/webdriver/#dfn-sessions) with the [endpoint node](https://w3c.github.io/webdriver/#dfn-endpoint-node). If the creation fails, a [session not created](https://w3c.github.io/webdriver/#dfn-session-not-created) [error](https://w3c.github.io/webdriver/#dfn-errors) is returned.
 

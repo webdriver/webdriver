@@ -1,0 +1,52 @@
+properties:
+  type:
+    description: type of action
+    type: string
+    enum:
+      - pointer
+      - key
+      - none
+  id:
+    description: a unique id chosen to represent this input source for this and future actions
+    type: string
+  parameters:
+    description: Pointer-type input sources can also have a parameters property, which is an object with a pointerType key specifying either mouse, pen, or touch. If parameters is omitted, the pointerType is considered to be mouse
+    type: object
+    properties:
+      pointerType:
+        type: string
+        enum:
+          - mouse
+          - pen
+          - touch
+  actions:
+    description: a list of action objects for this particular input source. An action object has different fields based on the kind of input device it belongs to
+    type: array
+    items:
+      $ref: './ActionObject.yml'
+type: object
+required:
+  - type
+  - id
+  - actions
+example:
+  type: pointer
+  id: finger1
+  parameters:
+    pointerType: touch
+  actions:
+    - type: pointerMove
+      duration: 0
+      x: 100
+      y: 100
+    - type: pointerDown
+      button: 0
+    - type: pause
+      duration: 500
+    - type: pointerMove
+      duration: 1000
+      origin: pointer
+      x: -50
+      y: 0
+    - type: pointerUp
+      button: 0
