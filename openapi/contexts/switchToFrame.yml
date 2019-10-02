@@ -1,0 +1,73 @@
+operationId: switchToFrame
+summary: Switch To Frame
+externalDocs:
+  description: See switchToFrame command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-switch-to-frame'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/NullResponse.yml
+requestBody:
+  description: ''
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../components/schemas/Frame.yml
+description: |-
+  > NOTE
+  >
+  > The Switch To Frame command is used to select the current top-level browsing context or a child browsing context of the current browsing context to use as the current browsing context for subsequent commands.
+
+  The remote end steps are:
+
+  1. Let id be the result of getting the property `"id"` from the parameters argument.
+
+  1. If _id_ is not `null`, a `Number` object, or an Object that represents a web element, return error with error code invalid argument.
+
+  1. If the current browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Run the substeps of the first matching condition:
+
+    * ___id_ is `null`__
+
+      1. Set the current browsing context to the current top-level browsing context.
+
+    * ___id_ is a `Number` object__
+
+      1. If _id_ is less than 0 or greater than 2<sup>16</sup> – 1, return error with error code invalid argument.
+
+      1. Let window be the associated window of the current browsing context’s active document.
+
+      1. If _id_ is not a supported property index of window, return error with error code no such frame.
+
+      1. Let _child window_ be the `WindowProxy` object obtained by calling window.`[[GetOwnProperty]]` (_id_).
+
+      1. Set the current browsing context to child window’s browsing context.
+
+    * ___id_ represents a web element__
+
+      1. Let _element_ be the result of trying to get a known element by web element reference id.
+
+      1. If _element_ is stale, return error with error code stale element reference.
+
+      1. If _element_ is not a `frame` or `iframe` element, return error with error code no such frame.
+
+      1. Set the current browsing context to _element_’s nested browsing context.
+
+  1. Update any implementation-specific state that would result from the user selecting the current browsing context for interaction, without altering OS-level focus.
+
+  1. Return success with data `null`.
+
+  > NOTE
+  >
+  > WebDriver is not bound by the same origin policy, so it is always possible to switch into child browsing contexts, even if they are different origin to the current browsing context.

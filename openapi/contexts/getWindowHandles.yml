@@ -1,0 +1,34 @@
+operationId: getWindowHandles
+summary: Get Window Handles
+externalDocs:
+  description: See getWindowHandles command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-window-handles'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: An array which is a list of window handles.
+    content:
+      application/json:
+        schema:
+          properties:
+            value:
+              type: array
+              items:
+                $ref: ../components/schemas/WindowHandle.yml
+description: |-
+  The order in which the window handles are returned is arbitrary.
+
+  The remote end steps are:
+
+  1. Let _handles_ be a JSON List.
+
+  1. For each top-level browsing context in the remote end, push the associated window handle onto handles.
+
+  1. Return success with data _handles_.
+
+  > EXAMPLE 9
+  >
+  > In order to determine whether or not a particular interaction with the browser opens a new window, one can obtain the set of window handles before the interaction is performed and compare it with the set after the action is performed.

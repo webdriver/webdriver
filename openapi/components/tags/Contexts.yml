@@ -1,0 +1,33 @@
+name: Contexts
+externalDocs:
+  url: https://www.w3.org/TR/webdriver/#contexts
+description: |-
+  Many WebDriver commands happen in the context of either the current browsing context or current top-level browsing context. The current top-level browsing context is represented in the protocol by its associated window handle. When a top-level browsing context is selected using the Switch To Window command, a specific browsing context can be selected using the Switch to Frame command.
+
+  > NOTE
+  >
+  > The use of the term “window” to refer to a top-level browsing context is legacy and doesn’t correspond with either the operating system notion of a “window” or the DOM Window object.
+
+  A browsing context is said to be __no longer open__ if it has been discarded.
+
+  Each browsing context has an associated __window handle__ which uniquely identifies it. This must be a String and must not be `"current"`.
+
+  The __web window identifier__ is the string constant `"window-fcc6-11e5-b4f8-330a88ab9d7f"`.
+
+  The __web frame identifier__ is the string constant `"frame-075b-4da1-b6ba-e579c2d3230a"`.
+
+  The __JSON serialization of the `WindowProxy` object__ is the JSON Object obtained by applying the following algorithm to the given `WindowProxy` object window:
+
+  1. Let _identifier_ be the web window identifier if the associated browsing context of window is a top-level browsing context.
+
+    Otherwise let it be the web frame identifier.
+
+  1. Return a JSON Object initialised with the following properties:
+
+    __identifier__
+
+      Associated window handle of the window’s browsing context.
+
+  > NOTE
+  >
+  > In accordance with the focus section of the [HTML] specification, commands are unaffected by whether the operating system window has focus or not.

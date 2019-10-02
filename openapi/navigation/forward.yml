@@ -1,0 +1,34 @@
+operationId: forward
+summary: Forward
+externalDocs:
+  description: See forward command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-forward'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Navigation
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/NullResponse.yml'
+description: |-
+  > NOTE
+  >
+  > This command causes the browser to traverse one step forwards in the joint session history of the current top-level browsing context.
+
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Traverse the history by a delta 1 for the current browsing context.
+
+  1. If the previous step completed results in a `pageHide` event firing, wait until `pageShow` event fires or for the session page load timeout milliseconds to pass, whichever occurs sooner.
+
+  1. If the previous step completed by the session page load timeout being reached, and user prompts have been handled, return error with error code timeout.
+
+  1. Return success with data `null`.

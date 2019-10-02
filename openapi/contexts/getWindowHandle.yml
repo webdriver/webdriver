@@ -1,0 +1,26 @@
+operationId: getWindowHandle
+summary: Get Window Handle
+externalDocs:
+  description: See getWindowHandle command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-window-handle'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: Returns a string which is the window handle for the current top-level browsing context.
+    content:
+      application/json:
+        schema:
+          properties:
+            value:
+              description: A string which is the window handle for the current top-level browsing context.
+              type: string
+              example: window-1234-5678-abcd-efgh
+description: |-
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Return success with data being the window handle associated with the current top-level browsing context.

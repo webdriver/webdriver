@@ -69,3 +69,55 @@ description: |-
   >   {"browserName": "edge", "platformName": "linux"}
   > ]
   > ```
+
+  The remote end steps are:
+
+  1. If the maximum active sessions is equal to the length of the list of active sessions, return error with error code session not created.
+  1. If the remote end is an intermediary node, take implementation-defined steps that either result in returning an error with error code session not created, or in returning a success with data that is isomorphic to that returned by remote ends according to the rest of this algorithm. If an error is not returned, the intermediary node must retain a reference to the session created on the upstream node as the associated session such that commands may be forwarded to this associated session on subsequent commands.
+
+    > NOTE
+    >
+    > How this is done is entirely up to the implementation, but typically the `sessionId`, and URL and URL prefix of the upstream remote end will need to be tracked.
+
+  1. If the maximum active sessions is equal to the length of the list of active sessions, return error with error code session not created.
+  1. Let _capabilities_ be the result of trying to process capabilities with _parameters_ as an argument.
+  1. If _capabilities_’s is `null`, return error with error code session not created.
+  1. Let _session_ id be the result of generating a UUID.
+  1. Let _session_ be a new session with the session ID of session id.
+  1. Set the current session to session.
+  1. Append session to active sessions.
+  1. Let _body_ be a JSON Object initialised with:
+    * `"sessionId"`
+      _session id_
+    * `"capabilities"`
+      _capabilities_
+
+  1. Initialize the following from capabilities:
+    1. Let _strategy_ be the result of getting property `"pageLoadStrategy"` from capabilities.
+    1. If _strategy_ is a string, set the current session’s page loading strategy to strategy. Otherwise, set the page loading strategy to normal and set a property of capabilities with name `"pageLoadStrategy"` and value `"normal"`.
+    1. Let _strictFileInteractability_ be the result of getting property `"strictFileInteractability"` from capabilities.
+    1. If _strictFileInteractability_ is a boolean, set the current session’s strict file interactability to strictFileInteractability. Otherwise set the current session’s strict file interactability to false.
+    1. Let _proxy_ be the result of getting property `"proxy"` from capabilities and run the substeps of the first matching statement:
+
+      * __proxy is a proxy configuration object__
+        Take implementation-defined steps to set the user agent proxy using the extracted proxy configuration. If the defined proxy cannot be configured return error with error code session not created.
+
+      * __Otherwise__
+        Set a property of capabilities with name `"proxy"` and a value that is a new JSON Object.
+
+    1. If capabilities has a property with the key `"timeouts"`:
+      1. Let _timeouts_ be the result of trying to JSON deserialize as a timeouts configuration the value of the `"timeouts"` property.
+      1. Make the session timeouts the new timeouts.
+
+    1. Set a property on _capabilities_ with name `"timeouts"` and value that of the JSON deserialization of the session timeouts.
+    1. Apply changes to the user agent for any implementation-defined capabilities selected during the capabilities processing step.
+
+  1. Set the webdriver-active flag to true.
+  1. Set the current top-level browsing context for session in an implementation-specific way. This should be the top-level browsing context of the UA’s current browsing context.
+
+    > NOTE
+    >
+    > WebDriver implementations typically start a completely new browser instance, but there is no requirement in this specification (or for WebDriver only to be used to automate only web browsers). Implementations might choose to use an existing browser instance, eg. by selecting the window that currently has focus.
+
+  1. Set the request queue to a new queue.
+  1. Return success with data _body_.

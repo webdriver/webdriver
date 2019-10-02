@@ -3,32 +3,32 @@ externalDocs:
   url: https://www.w3.org/TR/webdriver/#sessions
 description: |-
   A [session](https://www.w3.org/TR/webdriver/#dfn-sessions) is equivalent to a single instantiation of a particular user agent, including all its child browsers. WebDriver gives each [session](https://www.w3.org/TR/webdriver/#dfn-sessions) a unique [session ID](https://www.w3.org/TR/webdriver/#dfn-session-id) that can be used to differentiate one session from another, allowing multiple user agents to be controlled from a single HTTP server, and allowing sessions to be routed via a multiplexer (known as an [intermediary node](https://www.w3.org/TR/webdriver/#dfn-intermediary-nodes)).
-  
-  A WebDriver session represents the connection between a local end and a specific remote end.
+
+  A WebDriver __session__ represents the connection between a local end and a specific remote end.
 
   A session is started when a New Session is invoked. It is an error to send any commands before starting a session, or to continue to send commands after the session has been closed. Maintaining session continuity between commands to the remote end requires passing a session ID.
 
   A session is torn down at some later point; either explicitly by invoking Delete Session, or implicitly when Close Window is called at the last remaining top-level browsing context.
 
-  An intermediary node will maintain an associated session for each active session. This is the session on the upstream neighbor that is created when the intermediary node executes the New Session command. Closing a session on an intermediary node will also close the session of the associated session.
+  An intermediary node will maintain an __associated session__ for each active session. This is the session on the upstream neighbor that is created when the intermediary node executes the New Session command. Closing a session on an intermediary node will also close the session of the associated session.
 
-  All commands, except New Session and Status, have an associated current session, which is the session in which that command will run.
+  All commands, except New Session and Status, have an associated __current session__, which is the session in which that command will run.
 
-  A remote end has an associated list of active sessions, which is a list of all sessions that are currently started. A remote end that is not an intermediary node has at most one active session at a given time.
+  A remote end has an associated list of __active sessions__, which is a list of all sessions that are currently started. A remote end that is not an intermediary node has at most one active session at a given time.
 
-  A remote end has an associated maximum active sessions (an integer) that defines the number of active sessions that are supported. This may be “unlimited” for intermediary nodes, but must be exactly one for a remote end that is an endpoint node.
+  A remote end has an associated __maximum active sessions__ (an integer) that defines the number of active sessions that are supported. This may be “unlimited” for intermediary nodes, but must be exactly one for a remote end that is an endpoint node.
 
-  A session has an associated session ID (a string representation of a UUID) used to uniquely identify this session. Unless stated otherwise it is null.
+  A session has an associated __session ID__ (a string representation of a UUID) used to uniquely identify this session. Unless stated otherwise it is `null`.
 
-  A session has an associated current browsing context, which is the browsing context against which commands will run.
+  A session has an associated __current browsing context__, which is the browsing context against which commands will run.
 
-  A session has an associated current top-level browsing context, which is the current browsing context if it itself is a top-level browsing context, and otherwise is the top-level browsing context of the current browsing context.
+  A session has an associated __current top-level browsing context__, which is the current browsing context if it itself is a top-level browsing context, and otherwise is the top-level browsing context of the current browsing context.
 
-  A session has an associated session timeouts that records the timeout duration values used to control the behavior of script evaluation, navigation, and element retrieval.
+  A session has an associated __session timeouts__ that records the timeout duration values used to control the behavior of script evaluation, navigation, and element retrieval.
 
-  A session has an associated page loading strategy, which is one of the keywords from the table of page load strategies. Unless stated otherwise, it is normal.
+  A session has an associated __page loading strategy__, which is one of the keywords from the table of page load strategies. Unless stated otherwise, it is normal.
 
-  A session has an associated secure TLS state that indicates whether untrusted or self-signed TLS certificates should be trusted for the duration of the WebDriver session. If it is unset, this indicates that certificate- or TLS errors that occur upon navigation should be suppressed. The state can be unset by providing an "acceptInsecureCerts" capability with the value true. Unless stated otherwise, it is set.
+  A session has an associated __secure TLS__ state that indicates whether untrusted or self-signed TLS certificates should be trusted for the duration of the WebDriver session. If it is unset, this indicates that certificate- or TLS errors that occur upon navigation should be suppressed. The state can be unset by providing an "acceptInsecureCerts" capability with the value true. Unless stated otherwise, it is set.
 
   A session has an associated strict file interactability state which is a boolean.
 
@@ -40,18 +40,18 @@ description: |-
 
   A session has an associated input cancel list.
 
-  A session has an associated request queue which is a queue of requests that are currently awaiting processing.
+  A session has an associated __request queue__ which is a queue of requests that are currently awaiting processing.
 
-  When asked to close the session, a remote end must take the following steps:
+  When asked to __close the session__, a remote end must take the following steps:
 
   1. Perform the following substeps based on the remote end’s type:
-    * Remote end is an endpoint node
+    * __Remote end is an endpoint node__
       1. Set the webdriver-active flag to false.
       2. An endpoint node must close any top-level browsing contexts associated with the session, without prompting to unload.
-    * Remote end is an intermediary node
+    * __Remote end is an intermediary node__
       1. Close the associated session. If this causes an error to occur, complete the remainder of this algorithm before returning the error.
   2. Remove the current session from active sessions.
   3. Perform any implementation-specific cleanup steps.
-  4. If an error has occurred in any of the steps above, return the error, otherwise return success with data null.
+  4. If an error has occurred in any of the steps above, return the error, otherwise return success with data `null`.
 
   Closing a session might cause the associated browser process to be killed. It is assumed that any implementation-specific cleanup steps are performed after the response has been sent back to the client so that the connection is not prematurely closed.

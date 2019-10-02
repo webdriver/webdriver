@@ -1,0 +1,29 @@
+operationId: getWindowRect
+summary: Get Window Rect
+externalDocs:
+  description: See getWindowRect command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-window-rect'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Resizing and positioning windows
+responses:
+  200:
+    content:
+      application/json:
+        schema:
+          properties:
+            value:
+              $ref: ../components/schemas/WindowRect.yml
+description: |-
+  > NOTE
+  >
+  > The Get Window Rect command returns the size and position on the screen of the operating system window corresponding to the current top-level browsing context.
+
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Return success with the JSON serialization of the current top-level browsing context’s window rect.

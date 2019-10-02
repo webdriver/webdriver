@@ -14,3 +14,8 @@ responses:
       application/json:
         schema:
           $ref: ../components/schemas/NullResponse.yml
+description: |-
+  The remote end steps are:
+
+  1. If the current session is an active session, try to close the session.
+  1. Return success with data `null`.

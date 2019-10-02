@@ -1,0 +1,67 @@
+operationId: navigateTo
+summary: Navigate To
+externalDocs:
+  description: See navigateTo command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-navigate-to'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Navigation
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/NullResponse.yml'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          url:
+            description: An absolute URL or is not an absolute URL with fragment or not a local scheme.
+            type: string
+            example: 'https://example.com'
+description: |-
+  > NOTE
+  > The command causes the user agent to navigate the current top-level browsing context to a new location.
+
+  If the session is not in a secure TLS state, no certificate errors that would normally cause the user agent to abort and show a security warning are to hinder navigation to the requested address.
+
+  > EXAMPLE 8
+  > To navigate the current top-level browsing context of the session with ID 1 to https://example.com, the local end would POST to /session/1/url with the body:
+  >
+  > `{"url": "https://example.com"}`
+
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Let __url__ be the result of getting the property `url` from the parameters argument.
+
+  1. If __url__ is not an absolute URL or is not an absolute URL with fragment or not a local scheme, return error with error code invalid argument.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Let __current URL__ be the current top-level browsing context’s active document’s document URL.
+
+  1. If __current URL__ and __url__ do not have the same absolute URL:
+
+    1. If __timer__ has not been started, start a __timer__. If this algorithm has not completed before __timer__ reaches the session’s session page load timeout in milliseconds, return an error with error code timeout.
+
+  1. Navigate the current top-level browsing context to __url__.
+
+  1. If __url__ is special except for file and current __URL__ and __URL__ do not have the same absolute URL :
+
+    1. Try to wait for navigation to complete.
+
+    1. Try to run the post-navigation checks.
+
+  1. Set the current browsing context to the current top-level browsing context.
+
+  1. If the current top-level browsing context contains a refresh state pragma directive of __time__ 1 second or less, wait until the refresh timeout has elapsed, a new navigate has begun, and return to the first step of this algorithm.
+
+  1. Return success with data `null`.

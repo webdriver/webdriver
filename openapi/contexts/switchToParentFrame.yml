@@ -1,0 +1,32 @@
+operationId: switchToParentFrame
+summary: Switch To Parent Frame
+externalDocs:
+  description: See switchToParentFrame command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-switch-to-parent-frame'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/NullResponse.yml'
+description: |-
+  > NOTE
+  >
+  > The Switch to Parent Frame command sets the current browsing context for future commands to the parent of the current browsing context.
+
+  The remote end steps are:
+
+  1. If the current browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. If the current browsing context is not equal to the current top-level browsing context, set the current browsing context to the parent browsing context of the current browsing context.
+
+  1. Update any implementation-specific state that would result from the user selecting the current browsing context for interaction, without altering OS-level focus.
+
+  1. Return success with data `null`.

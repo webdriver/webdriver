@@ -1,0 +1,33 @@
+operationId: getTitle
+summary: Get Title
+externalDocs:
+  description: See getTitle command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-title'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Navigation
+responses:
+  200:
+    description: 'This command returns the document title of the current top-level browsing context, equivalent to calling document.title.'
+    content:
+      application/json:
+        schema:
+          properties:
+            value:
+              description: The result of calling the algorithm for getting the title attribute of the current top-level browsing context’s active document.
+              type: string
+description: |-
+  > NOTE
+  >
+  > This command returns the document title of the current top-level browsing context, equivalent to calling document.title.
+
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Let _title_ be the result of calling the algorithm for getting the `title` attribute of the current top-level browsing context’s active document.
+
+  1. Return success with data _title_.

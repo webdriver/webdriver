@@ -1,0 +1,42 @@
+operationId: switchToWindow
+summary: Switch To Window
+externalDocs:
+  description: See switchToWindow command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-switch-to-window'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/NullResponse.yml
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../components/schemas/WindowHandle.yml
+description: |-
+  > NOTE
+  >
+  > Switching window will select the current top-level browsing context used as the target for all subsequent commands. In a tabbed browser, this will typically make the tab containing the browsing context the selected tab.
+
+  The remote end steps are:
+
+  1. Let _handle_ be the result of getting the property `"handle"` from the parameters argument.
+
+  1. If _handle_ is undefined, return error with error code invalid argument.
+
+  1. If there is an active user prompt, that prevents the focussing of another top-level browsing context, return error with error code unexpected alert open.
+
+  1. If _handle_ is equal to the associated window handle for some top-level browsing context in the current session, set the session’s current browsing context to that browsing context.
+
+  1. Otherwise, return error with error code no such window.
+
+  1. Update any implementation-specific state that would result from the user selecting the current browsing context for interaction, without altering OS-level focus.
+
+  1. Return success with data `null`.

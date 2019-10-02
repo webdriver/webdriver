@@ -1,0 +1,5 @@
+name: Resizing and positioning windows
+externalDocs:
+  url: https://w3c.github.io/webdriver/#resizing-and-positioning-windows
+description: |-
+  WebDriver provides commands for interacting with the operating system window containing the current top-level browsing context. Because different operating systems’ window managers provide different abilities, not all of the commands in this section can be supported by all remote ends. Support for these commands is determined by the window dimensioning/positioning capability. Where a command is not supported, an unsupported operation error is returned.

@@ -22,6 +22,9 @@ servers:
 tags:
   - $ref: ./components/tags/Sessions.yml
   - $ref: ./components/tags/Timeouts.yml
+  - $ref: ./components/tags/Navigation.yml
+  - $ref: ./components/tags/Contexts.yml
+  - $ref: ./components/tags/Windows.yml
 paths:
   /session:
     post:
@@ -37,288 +40,45 @@ paths:
       $ref: ./timeouts/getTimeouts.yml
     post:
       $ref: ./timeouts/setTimeouts.yml
-  '/session/{sessionId}/url':
+  /session/{sessionId}/url:
+    post:
+      $ref: ./navigation/navigateTo.yml
     get:
-      operationId: getUrl
-      summary: The Get Current URL command returns the URL of the current top-level browsing context.
-      externalDocs:
-        description: See getUrl command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-current-url'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: Current top-level browsing context’s active document’s document URL
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  value:
-                    description: Current top-level browsing context’s active document’s document URL
-                    type: string
-                    example: 'https://example.com'
+      $ref: ./navigation/getCurrentUrl.yml
+  /session/{sessionId}/back:
     post:
-      operationId: navigateTo
-      summary: The navigateTo (go) command is used to cause the user agent to navigate the current top-level browsing context a new location.
-      externalDocs:
-        description: See navigateTo command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-navigate-to'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                url:
-                  description: An absolute URL or is not an absolute URL with fragment or not a local scheme.
-                  type: string
-                  example: 'https://example.com'
-  '/session/{sessionId}/back':
+      $ref: ./navigation/back.yml
+  /session/{sessionId}/forward:
     post:
-      operationId: back
-      summary: The Back command causes the browser to traverse one step backward in the joint session history of the current top-level browsing context. This is equivalent to pressing the back button in the browser chrome or calling `window.history.back`.
-      externalDocs:
-        description: See back command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-back'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-  '/session/{sessionId}/forward':
+      $ref: ./navigation/forward.yml
+  /session/{sessionId}/refresh:
     post:
-      operationId: forward
-      summary: The Forward command causes the browser to traverse one step forwards in the joint session history of the current top-level browsing context.
-      externalDocs:
-        description: See forward command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-forward'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-  '/session/{sessionId}/refresh':
-    post:
-      operationId: refresh
-      summary: The Refresh command causes the browser to reload the page in current top-level browsing context.
-      externalDocs:
-        description: See refresh command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-refresh'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-  '/session/{sessionId}/title':
+      $ref: ./navigation/refresh.yml
+  /session/{sessionId}/title:
     get:
-      operationId: getTitle
-      summary: 'The Get Title command returns the document title of the current top-level browsing context, equivalent to calling `document.title`.'
-      externalDocs:
-        description: See getTitle command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-title'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: 'This command returns the document title of the current top-level browsing context, equivalent to calling document.title.'
-          content:
-            application/json:
-              schema:
-                properties:
-                  value:
-                    description: The result of calling the algorithm for getting the title attribute of the current top-level browsing context’s active document.
-                    type: string
-  '/session/{sessionId}/window':
+      $ref: ./navigation/getTitle.yml
+  /session/{sessionId}/window:
     get:
-      operationId: getWindowHandle
-      summary: The Get Window Handle command returns the window handle for the current top-level browsing context. It can be used as an argument to Switch To Window.
-      externalDocs:
-        description: See getWindowHandle command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-window-handle'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: Returns a string which is the window handle for the current top-level browsing context.
-          content:
-            application/json:
-              schema:
-                properties:
-                  value:
-                    description: A string which is the window handle for the current top-level browsing context.
-                    type: string
-                    example: window-1234-5678-abcd-efgh
-      description: |
-        # What up!
-        ```
-        sasad
-        ```
-        sasaddsasda
-        sadasdsa
-        sasddsa
-        > lalala
-        dsasad
+      $ref: ./contexts/getWindowHandle.yml
     delete:
-      operationId: closeWindow
-      summary: 'The Close Window command closes the current top-level browsing context. Once done, if there are no more top-level browsing contexts open, the WebDriver session itself is closed.'
-      externalDocs:
-        description: See closeWindow command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-close-window'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
+      $ref: ./contexts/closeWindow.yml
     post:
-      operationId: switchToWindow
-      summary: 'The Switch To Window command is used to select the current top-level browsing context for the current session, i.e. the one that will be used for processing commands.'
-      externalDocs:
-        description: See switchToWindow command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-window'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: './components/schemas/WindowHandle.yml'
-  '/session/{sessionId}/window/new':
-    post:
-      operationId: createWindow
-      summary: Create a new top-level browsing context.
-      externalDocs:
-        description: See createWindow command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#new-window'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: New window object containing 'handle' with the value of the handle and 'type' with the value of the created window type
-          content:
-            application/json:
-              schema:
-                properties:
-                  value:
-                    $ref: './components/schemas/NewWindowHandle.yml'
-      requestBody:
-        description: ''
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: './components/schemas/NewWindowHandle.yml'
-  '/session/{sessionId}/window/handles':
+      $ref: ./contexts/switchToWindow.yml
+  /session/{sessionId}/window/handles:
     get:
-      operationId: getWindowHandles
-      summary: The Get Window Handles command returns a list of window handles for every open top-level browsing context. The order in which the window handles are returned is arbitrary.
-      externalDocs:
-        description: See getWindowHandles command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-window-handles'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: An array which is a list of window handles.
-          content:
-            application/json:
-              schema:
-                properties:
-                  value:
-                    type: array
-                    items:
-                      $ref: './components/schemas/WindowHandle.yml'
-  '/session/{sessionId}/frame':
+      $ref: ./contexts/getWindowHandles.yml
+  /session/{sessionId}/window/new:
     post:
-      operationId: switchToFrame
-      summary: The Switch To Frame command is used to select the current top-level browsing context or a child browsing context of the current browsing context to use as the current browsing context for subsequent commands.
-      externalDocs:
-        description: See switchToFrame command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-frame'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-      requestBody:
-        description: ''
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: './components/schemas/Frame.yml'
-  '/session/{sessionId}/frame/parent':
+      $ref: ./contexts/newWindow.yml
+  /session/{sessionId}/frame:
     post:
-      operationId: switchToParentFrame
-      summary: The Switch to Parent Frame command sets the current browsing context for future commands to the parent of the current browsing context.
-      externalDocs:
-        description: See switchToParentFrame command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-switch-to-parent-frame'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: empty response
-          content:
-            application/json:
-              schema:
-                $ref: './components/schemas/NullResponse.yml'
-  '/session/{sessionId}/window/rect':
+      $ref: ./contexts/switchToFrame.yml
+  /session/{sessionId}/frame/parent:
+    post:
+      $ref: ./contexts/switchToParentFrame.yml
+  /session/{sessionId}/window/rect:
     get:
-      operationId: getWindowRect
-      summary: The Get Window Rect command returns the size and position on the screen of the operating system window corresponding to the current top-level browsing context.
-      externalDocs:
-        description: See getWindowRect command in WebDriver specification
-        url: 'https://w3c.github.io/webdriver/#dfn-get-window-rect'
-      parameters:
-        - $ref: ./components/parameters/sessionId.yml
-      responses:
-        200:
-          description: 'A JSON representation of a "window rect" object. This has 4 properties: `x`, `y`, `width` and `height`.'
-          content:
-            application/json:
-              schema:
-                properties:
-                  value:
-                    $ref: './components/schemas/WindowRect.yml'
+      $ref: ./contexts/getWindowRect.yml
     post:
       operationId: setWindowRect
       summary: The Set Window Rect command alters the size and the position of the operating system window corresponding to the current top-level browsing context.

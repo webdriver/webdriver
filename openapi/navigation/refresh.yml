@@ -1,0 +1,38 @@
+operationId: refresh
+summary: Refresh
+externalDocs:
+  description: See refresh command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-refresh'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Navigation
+responses:
+  200:
+    description: empty response
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/NullResponse.yml'
+description: |-
+  > NOTE
+  >
+  > This command causes the browser to reload the page in the current top-level browsing context.
+
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Initiate an overridden reload of the current top-level browsing context’s active document.
+
+  1. If url is special except for `file`:
+
+    1. Try to wait for navigation to complete.
+
+    1. Try to run the post-navigation checks.
+
+  1. Set the current browsing context to the current top-level browsing context.
+
+  1. Return success with data `null`.

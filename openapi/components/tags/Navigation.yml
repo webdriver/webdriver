@@ -1,0 +1,55 @@
+name: Navigation
+externalDocs:
+  url: https://www.w3.org/TR/webdriver/#sessions
+description: |-
+  The commands in this section allow navigation of the current top-level browsing context to new URLs and introspection of the document currently loaded in this browsing context.
+
+  For commands that cause a new document to load, the point at which the command returns is determined by the session’s page loading strategy. The normal state causes it to return after the load event fires on the new page, eager causes it to return after the DOMContentLoaded event fires, and none causes it to return immediately.
+
+  Navigation actions are also affected by the value of the session page load timeout, which determines the maximum time that commands will block before returning with a timeout error.
+
+  The following is the table of page load strategies that links the pageLoadStrategy capability keyword to a page loading strategy state, and shows which document readiness state that corresponds to it:
+
+  Keyword     |	Page load strategy state  |  Document readiness state
+  ------------|---------------------------|---------------------------
+  `"none"`    | __none__                    |
+  `"eager"`	  | __eager__                   |	`"interactive"`
+  `"normal"`	|  __normal__                 |	`"complete"`
+
+  When asked to __deserialize as a page load strategy__ with argument value:
+
+  1. If value is not a string return an error with error code invalid argument.
+  1. If there is no entry in the table of page load strategies with keyword value return an error with error code invalid argument.
+  1. Return success with data value.
+
+  When asked to __wait for navigation to complete__, run the following steps:
+
+  1. If the current session has a page loading strategy of none, return success with data null.
+  1. If the current browsing context is no longer open, return success with data null.
+  1. Start a timer. If this algorithm has not completed before timer reaches the session’s session page load timeout in milliseconds, return an error with error code timeout.
+  1. If there is an ongoing attempt to navigate the current browsing context that has not yet matured, wait for navigation to mature.
+  1. Let readiness target be the document readiness state associated with the current session’s page loading strategy, which can be found in the table of page load strategies.
+  1. Wait for the current browsing context’s document readiness state to reach readiness target, or for the session page load timeout to pass, whichever occurs sooner.
+  1. If the previous step completed by the session page load timeout being reached and the browser does not have an active user prompt, return error with error code timeout.
+  1. Return success with data null.
+
+  When asked to run the __post-navigation checks__, run the substeps of the first matching statement:
+
+  * __response is a network error__
+
+    Return error with error code unknown error.
+
+    > NOTE
+    >
+    > A "network error" in this case is not an HTTP response with a status code indicating an unsucessful result, but could be a problem occurring lower in the OSI model, or a failed DNS lookup.
+
+  * __response is blocked by content security policy__
+
+    If the current session’s secure TLS state is disabled, take implementation specific steps to ensure the navigation is not aborted and that the untrusted- or invalid TLS certificate error that would normally occur under these circumstances, are suppressed.
+
+    Otherwise return error with error code insecure certificate.
+
+  * __response’s HTTP status is 401__
+  * __Otherwise__
+
+    Irrespective of how a possible authentication challenge is handled, return success with data null.

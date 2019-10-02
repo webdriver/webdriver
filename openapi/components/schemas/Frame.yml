@@ -1,4 +1,3 @@
-description: One of three possible types: null: this represents the top-level browsing context (i.e., not an iframe), a Number, representing the index of the window object corresponding to a frame, a string representing an element id that can be received using `findElement`.
 properties:
   id:
     anyOf:

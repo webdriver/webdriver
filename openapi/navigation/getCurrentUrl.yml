@@ -1,0 +1,31 @@
+operationId: getCurrentUrl
+summary: Get Current URL
+externalDocs:
+  description: See getUrl command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#dfn-get-current-url'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Navigation
+responses:
+  200:
+    description: Current top-level browsing context’s active document’s document URL
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            value:
+              description: Current top-level browsing context’s active document’s document URL
+              type: string
+              example: 'https://example.com'
+description: |-
+  The remote end steps are:
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Let __url__ be the serialization of the current top-level browsing context’s active document’s document URL.
+
+  1. Return success with data __url__.

@@ -1,0 +1,55 @@
+operationId: newWindow
+summary: New Window
+externalDocs:
+  description: See newWindow command in WebDriver specification
+  url: 'https://w3c.github.io/webdriver/#new-window'
+parameters:
+  - $ref: ../components/parameters/sessionId.yml
+tags:
+  - Contexts
+responses:
+  200:
+    description: New window object containing 'handle' with the value of the handle and 'type' with the value of the created window type
+    content:
+      application/json:
+        schema:
+          properties:
+            value:
+              $ref: '../components/schemas/NewWindowHandle.yml'
+requestBody:
+  description: ''
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../components/schemas/NewWindowHandle.yml'
+description: |-
+  Create a new top-level browsing context.
+
+  The remote end steps are:
+
+  1. If the implementation does not support creating new top-level browsing contexts, return error with error code unsupported operation.
+
+  1. If the current top-level browsing context is no longer open, return error with error code no such window.
+
+  1. Handle any user prompts and return its value if it is an error.
+
+  1. Let _type hint_ be the result of getting the property `"type"` from the parameters argument.
+
+  1. Create a new top-level browsing context by running the window open steps with url set to `"about:blank"`, target set to the empty string, and features set to `"noopener"` and the user agent configured to create a new browing context. This must be done without invoking the focusing steps for the created browsing context. If type hint has the value `"tab"`, and the implementation supports multiple browsing context in the same OS window, the new browsing context should share an OS window with the current browsing context. If type hint is `"window"`, and the implementation supports multiple browsing contexts in seperate OS windows, the created browsing context should be in a new OS window. In all other cases the details of how the browsing context is presented to the user are implementation defined.
+
+  1. Let handle be the associated window handle of the newly created window.
+
+  1. Let type be `"tab"` if the newly created window shares an OS-level window with the current browsing context, or `"window"` otherwise.
+
+  1. Let _result_ be a new JSON Object initialised with:
+
+    * `"handle"`
+
+      The value of handle.
+
+    * `"type"`
+
+      The value of type.
+
+  1. Return success with data _result_.
